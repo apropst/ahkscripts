@@ -4,6 +4,7 @@ SetWorkingDir %A_ScriptDir%
 
 ; USING CTRL+SPACE WILL FORCE THE SCRIPT TO STOP.
 ; IF POE IS NOT THE FOCUS, SCRIPT WILL STOP.
+; Test change
 
 Global Stop := 0
 

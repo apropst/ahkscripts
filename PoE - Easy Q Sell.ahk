@@ -8,6 +8,7 @@ SetWorkingDir %A_ScriptDir%
 ; -Add logic to handle auto-sell of 20% qual item
 ; -Add logic to get sums of items = 40%, optimize to maximize Count
 ; -Add picking functionality, ctrl+click into inventory
+; -Add functionality for scanning for an item if no item exists in slot 1,1
 
 Global Stop := 0
 

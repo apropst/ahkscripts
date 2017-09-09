@@ -4,7 +4,10 @@ SetWorkingDir %A_ScriptDir%
 
 ; USING CTRL+SPACE WILL FORCE THE SCRIPT TO STOP.
 ; IF POE IS NOT THE FOCUS, SCRIPT WILL STOP.
-; Test change
+; To-Do:
+; -Add logic to handle auto-sell of 20% qual item
+; -Add logic to get sums of items = 40%, optimize to maximize Count
+; -Add picking functionality, ctrl+click into inventory
 
 Global Stop := 0
 
@@ -16,21 +19,22 @@ YIndex := 1
 
 Array := Object()
 
-ArrayCount := 0
-
 IfWinActive Path of Exile
 {
-	If (GetType() = "Gem")
+	If (GetType() = Gem)
 	{
-		OutputDebug, AHK %A_Now%: Entered base if
 		LoopCount := 12
 		RowIncrement := 70
 	}
-	Else
+	Else If (GetType() = Flask)
 	{
-		OutputDebug, AHK %A_Now%: Entered else if
 		LoopCount := 6
 		RowIncrement := 140
+	}
+	Else
+	{
+		OutputDebug, AHK %A_Now%: GetType failed.
+		ExitApp
 	}
 	
 	Loop, %LoopCount%
@@ -42,17 +46,18 @@ IfWinActive Path of Exile
 			CheckStatus()
 			Sleep, 100
 			
-			clipboard :=
+			clipboard := "EMPTY"
 			
-			Send ^c
+			SendEvent ^c
 			
-			;Array[ArrayCount] := ReturnQuality(clipboard)
+			Array[%XIndex%, %YIndex%] := ReturnQuality(clipboard)
 			
-			ArrayCount += 1
-			
+			XIndex += 1
 			MousePosX += 70
-			Sleep, 250
+			Sleep, 100
 		}
+		XIndex := 1
+		YIndex += 1
 		MousePosX := 55
 		MousePosY += %RowIncrement%
 	}
@@ -65,18 +70,12 @@ GetType()
 	
 	clipboard :=
 	
-	Send ^c
+	SendEvent ^c
 	
 	If Clipboard contains Gem
-	{
-		OutputDebug, AHK %A_Now%: Returned Gem
 		return Gem
-	}
 	Else
-	{
-		OutputDebug, AHK %A_Now%: Returned Flask
 		return Flask
-	}
 }
 
 CheckStatus()
@@ -89,7 +88,10 @@ CheckStatus()
 
 ReturnQuality(textstring)
 {
-
+	RegExMatch(textstring, "Quality.*", output)
+	StringSplit, outputarray, output, "+"
+	StringSplit, outputarrayfinal, outputarray2, "`%"
+	return %outputarrayfinal1%
 }
 
 

@@ -9,6 +9,7 @@ SetWorkingDir %A_ScriptDir%
 ; -Add logic to get sums of items = 40%, optimize to maximize Count
 ; -Add picking functionality, ctrl+click into inventory
 ; -Add functionality for scanning for an item if no item exists in slot 1,1
+; -Consider changing stop functionality to a while loop, rather than relying on CheckStatus()
 
 Global Stop := 0
 

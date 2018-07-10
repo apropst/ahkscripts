@@ -47,6 +47,7 @@ IfWinActive Path of Exile
 			MouseMove, %MousePosX%, %MousePosY%
 			CheckStatus()
 			Sleep, 100
+			CheckStatus()
 			
 			clipboard := "EMPTY"
 			
@@ -56,7 +57,9 @@ IfWinActive Path of Exile
 			
 			XIndex += 1
 			MousePosX += 70
+			CheckStatus()
 			Sleep, 100
+			CheckStatus()
 		}
 		XIndex := 1
 		YIndex += 1
@@ -90,6 +93,8 @@ CheckStatus()
 
 ReturnQuality(textstring)
 {
+	
+
 	RegExMatch(textstring, "Quality.*", output)
 	StringSplit, outputarray, output, "+"
 	StringSplit, outputarrayfinal, outputarray2, "`%"

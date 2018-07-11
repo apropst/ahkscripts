@@ -4,6 +4,12 @@ ListLines Off
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
+; TODO
+; 1) Add getting of player role
+; 2) Add getting of card type
+; 3) Add images and processing for gold cards
+; 4) Create scoring algorithm
+
 global ModType := []
 global Percent := []
 global ModTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "Kills","ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]

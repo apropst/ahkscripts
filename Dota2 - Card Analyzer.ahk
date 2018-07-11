@@ -1,38 +1,29 @@
 #NoEnv
+SetBatchLines -1
+ListLines Off
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-ModType := []
-Percent := []
-ModList := ["Deaths", "CampsStacked", "Stuns"]
-PercentList := ["5", "10"]
+global ModType := []
+global Percent := []
+global ModTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "Kills","ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
+global PercentList := ["5", "10", "15", "20", "25"]
 
 IfWinExist Dota 2
 {
 	WinActivate
 	
-	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *10 %A_ScriptDir%\Images\Dota2-CardAnalyzer\Deaths.png
-	
-	If ErrorLevel = 0
-	{
-		ModType.Push("Deaths")
-		Percent.Push(GetPercent(FoundX, FoundY))
-	}
-	
-	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *10 %A_ScriptDir%\Images\Dota2-CardAnalyzer\CampsStacked.png
-	
-	If ErrorLevel = 0
-	{
-		ModType.Push("Camps Stacked")
-		Percent.Push(GetPercent(FoundX, FoundY))
-	}
-	
-	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *10 %A_ScriptDir%\Images\Dota2-CardAnalyzer\Stuns.png
-	
-	If ErrorLevel = 0
-	{
-		ModType.Push("Stuns")
-		Percent.Push(GetPercent(FoundX, FoundY))
+	For index, element in ModTypeList
+	{		
+		CurrentMod := ModTypeList[index]
+		
+		ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *15 %A_ScriptDir%\Images\Dota2-CardAnalyzer\%CurrentMod%.png
+		
+		If ErrorLevel = 0
+		{
+			ModType.Push(CurrentMod)
+			Percent.Push(GetPercent(FoundX, FoundY))
+		}
 	}
 	
 	MessageString := "Found the following mods:"
@@ -46,15 +37,20 @@ IfWinExist Dota 2
 }
 ExitApp
 
+GetModType()
+{
+
+}
+
 GetPercent(TopX, TopY)
 {
-	ImageSearch, FoundX, FoundY, TopX, TopY, A_ScreenWidth, TopY + 20, *10 %A_ScriptDir%\Images\Dota2-CardAnalyzer\10.png
-	
-	If ErrorLevel = 0
-		return 10
-	
-	ImageSearch, FoundX, FoundY, TopX, TopY, A_ScreenWidth, TopY + 20, *10 %A_ScriptDir%\Images\Dota2-CardAnalyzer\5.png
-	
-	If ErrorLevel = 0
-		return 5
+	For indexPer, elementPer in PercentList
+	{
+		CurrentPercent := PercentList[indexPer]
+		
+		ImageSearch, FoundX, FoundY, TopX, TopY, TopX + 400, TopY + 25, *15 %A_ScriptDir%\Images\Dota2-CardAnalyzer\%CurrentPercent%.png
+		
+		If ErrorLevel = 0
+			return %CurrentPercent%
+	}
 }

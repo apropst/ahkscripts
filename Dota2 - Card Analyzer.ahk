@@ -13,11 +13,12 @@ SetWorkingDir %A_ScriptDir%
 
 global cardLocation := {}
 global cardType :=
+global playerRole :=
 global modType := []
 global percent := []
 global cardTypeList := ["Silver", "Gold", "Green"]
 global roleList := ["Core", "Offlane", "Support"]
-global modTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
+global modTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "GPM", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
 global percentList := ["5", "10", "15", "20", "25"]
 
 IfWinExist Dota 2
@@ -26,28 +27,11 @@ IfWinExist Dota 2
 	
 	cardType := GetCardType()
 	
-	role := GetRole()
+	playerRole := GetRole()
 	
-	GetModType()
+	GetMods()
 	
-	messageString .= "Card Type: " cardType "`n"
-	
-	If modType.Length() > 0
-		messageString .= "`nFound the following mods:`n"
-	
-	for index, element in modType
-	{
-		messageString .= modType[index] ": " percent[index] "%`n"
-	}
-	
-	If modType.Length() > 0
-		messageString .= "`n"
-	
-	messageString .= "Role: " role "`n`n"
-	
-	messageString .= "Top Right: " cardLocation.topLeftX "x" cardLocation.topLeftY "`n"
-	
-	messageString .= "Bottom Right: " cardLocation.bottomRightX "x" cardLocation.bottomRightY "`n"
+	messageString := GenerateDebug()
 	
 	MsgBox %messageString%
 }
@@ -57,11 +41,11 @@ GetCardType()
 {
 	For index, currentCardType in cardTypeList
 	{
-		ImageSearch, topLeftX, topLeftY, 0, 0, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\Images\Dota2-CardAnalyzer\CardTopLeft%currentCardType%.png
+		ImageSearch, topLeftX, topLeftY, 0, 0, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\Images\Dota2-CardAnalyzer\Corners\CardTopLeft%currentCardType%.png
 		
 		If ErrorLevel = 0
 		{
-			ImageSearch, bottomRightX, bottomRightY, topLeftX, topLeftY, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\Images\Dota2-CardAnalyzer\CardBottomRight%currentCardType%.png
+			ImageSearch, bottomRightX, bottomRightY, topLeftX, topLeftY, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\Images\Dota2-CardAnalyzer\Corners\CardBottomRight%currentCardType%.png
 			
 			cardLocation.topLeftX := topLeftX
 			cardLocation.topLeftY := topLeftY
@@ -75,20 +59,20 @@ GetCardType()
 
 GetRole()
 {
-	For index, role in roleList
+	For index, playerRole in roleList
 	{
-		ImageSearch, foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, %A_ScriptDir%\Images\Dota2-CardAnalyzer\%role%.png
+		ImageSearch, foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, %A_ScriptDir%\Images\Dota2-CardAnalyzer\Roles\%playerRole%%cardType%.png
 		
 		If ErrorLevel = 0
-			return %role%
+			return %playerRole%
 	}
 }
 
-GetModType()
+GetMods()
 {
 	For index, currentModType in modTypeList
 	{		
-		ImageSearch, foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, *15 %A_ScriptDir%\Images\Dota2-CardAnalyzer\%currentModType%.png
+		ImageSearch, foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, *30 %A_ScriptDir%\Images\Dota2-CardAnalyzer\Mods\%currentModType%%cardType%.png
 		
 		If ErrorLevel = 0
 		{
@@ -104,9 +88,33 @@ GetPercent(topX, topY)
 	{
 		currentPercent := percentList[indexPer]
 		
-		ImageSearch, foundX, foundY, topX, topY, topX + 400, topY + 25, *15 %A_ScriptDir%\Images\Dota2-CardAnalyzer\%currentPercent%.png
+		ImageSearch, foundX, foundY, topX, topY, topX + 400, topY + 25, *40 %A_ScriptDir%\Images\Dota2-CardAnalyzer\Percents\%currentPercent%%cardType%.png
 		
 		If ErrorLevel = 0
 			return %currentPercent%
 	}
+}
+
+GenerateDebug()
+{
+	messageString := "Card Type: " cardType "`n`n"
+	
+	messageString .= "Role: " playerRole "`n"
+	
+	If modType.Length() > 0
+		messageString .= "`nFound the following mods:`n"
+	
+	for index, element in modType
+	{
+		messageString .= modType[index] ": " percent[index] "%`n"
+	}
+	
+	If modType.Length() > 0
+		messageString .= "`n"
+	
+	messageString .= "Top Right: " cardLocation.topLeftX "x" cardLocation.topLeftY "`n"
+	
+	messageString .= "Bottom Right: " cardLocation.bottomRightX "x" cardLocation.bottomRightY "`n"
+	
+	return messageString
 }

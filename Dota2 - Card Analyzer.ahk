@@ -5,93 +5,108 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%
 
 ; TODO
-; 1) Add getting of card type
-; 2) Add images and processing for gold cards
-; 3) Create scoring algorithm
+; 1) Add images and processing for gold cards
+; 2) Create scoring algorithm
+; 3) Add processing of multiple cards per player
+; 4) Add processing of entire team list - maybe require manual changing between players?
+; 5) Add persistent storage of card info
 
 global cardLocation := {}
-global ModType := []
-global Percent := []
-global RoleList := ["Core", "Offlane", "Support"]
-global ModTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
-global PercentList := ["5", "10", "15", "20", "25"]
+global cardType :=
+global modType := []
+global percent := []
+global cardTypeList := ["Silver", "Gold", "Green"]
+global roleList := ["Core", "Offlane", "Support"]
+global modTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
+global percentList := ["5", "10", "15", "20", "25"]
 
 IfWinExist Dota 2
 {
 	WinActivate
 	
-	GetCardLocation()
+	cardType := GetCardType()
 	
 	role := GetRole()
 	
-	For index, element in ModTypeList
-	{		
-		CurrentMod := ModTypeList[index]
-		
-		ImageSearch, FoundX, FoundY, cardLocation.TopLeftX, cardLocation.TopLeftY, cardLocation.BottomRightX, cardLocation.BottomRightY, *15 %A_ScriptDir%\Images\Dota2-CardAnalyzer\%CurrentMod%.png
-		
-		If ErrorLevel = 0
-		{
-			ModType.Push(CurrentMod)
-			Percent.Push(GetPercent(FoundX, FoundY))
-		}
-	}
+	GetModType()
 	
-	MessageString := "Found the following mods:"
+	messageString .= "Card Type: " cardType "`n"
 	
-	for index, element in ModType
+	If modType.Length() > 0
+		messageString .= "`nFound the following mods:`n"
+	
+	for index, element in modType
 	{
-		MessageString .= "`n" ModType[index] ": " Percent[index] "%"
+		messageString .= modType[index] ": " percent[index] "%`n"
 	}
 	
-	MessageString .= "`nRole: " role
+	If modType.Length() > 0
+		messageString .= "`n"
 	
-	MessageString .= "`nTop Right: " cardLocation.TopLeftX "x" cardLocation.TopLeftY
+	messageString .= "Role: " role "`n`n"
 	
-	MessageString .= "`nBottom Right: " cardLocation.BottomRightX "x" cardLocation.BottomRightY
+	messageString .= "Top Right: " cardLocation.topLeftX "x" cardLocation.topLeftY "`n"
 	
-	MsgBox %MessageString%
+	messageString .= "Bottom Right: " cardLocation.bottomRightX "x" cardLocation.bottomRightY "`n"
+	
+	MsgBox %messageString%
 }
 ExitApp
 
-GetCardLocation()
+GetCardType()
 {
-	ImageSearch, TopLeftX, TopLeftY, 0, 0, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\Images\Dota2-CardAnalyzer\CardTopLeft.png
-	ImageSearch, BottomRightX, BottomRightY, 0, 0, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\Images\Dota2-CardAnalyzer\CardBottomRight.png
-	cardLocation.TopLeftX := TopLeftX
-	cardLocation.TopLeftY := TopLeftY
-	cardLocation.BottomRightX := BottomRightX
-	cardLocation.BottomRightY := BottomRightY
-	return
+	For index, currentCardType in cardTypeList
+	{
+		ImageSearch, topLeftX, topLeftY, 0, 0, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\Images\Dota2-CardAnalyzer\CardTopLeft%currentCardType%.png
+		
+		If ErrorLevel = 0
+		{
+			ImageSearch, bottomRightX, bottomRightY, topLeftX, topLeftY, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\Images\Dota2-CardAnalyzer\CardBottomRight%currentCardType%.png
+			
+			cardLocation.topLeftX := topLeftX
+			cardLocation.topLeftY := topLeftY
+			cardLocation.bottomRightX := bottomRightX
+			cardLocation.bottomRightY := bottomRightY
+			
+			return %currentCardType%
+		}
+	}
 }
 
 GetRole()
 {
-	For index, element in RoleList
+	For index, role in roleList
 	{
-		CurrentRole := RoleList[index]
-		
-		ImageSearch, FoundX, FoundY, cardLocation.TopLeftX, cardLocation.TopLeftY, cardLocation.BottomRightX, cardLocation.BottomRightY, %A_ScriptDir%\Images\Dota2-CardAnalyzer\%CurrentRole%.png
+		ImageSearch, foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, %A_ScriptDir%\Images\Dota2-CardAnalyzer\%role%.png
 		
 		If ErrorLevel = 0
-			return %CurrentRole%
+			return %role%
 	}
 }
 
 GetModType()
 {
-
-}
-
-GetPercent(TopX, TopY)
-{
-	For indexPer, elementPer in PercentList
-	{
-		CurrentPercent := PercentList[indexPer]
-		
-		ImageSearch, FoundX, FoundY, TopX, TopY, TopX + 400, TopY + 25, *15 %A_ScriptDir%\Images\Dota2-CardAnalyzer\%CurrentPercent%.png
+	For index, currentModType in modTypeList
+	{		
+		ImageSearch, foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, *15 %A_ScriptDir%\Images\Dota2-CardAnalyzer\%currentModType%.png
 		
 		If ErrorLevel = 0
-			return %CurrentPercent%
+		{
+			modType.Push(currentModType)
+			percent.Push(GetPercent(foundX, foundY))
+		}
+	}
+}
+
+GetPercent(topX, topY)
+{
+	For indexPer, elementPer in percentList
+	{
+		currentPercent := percentList[indexPer]
+		
+		ImageSearch, foundX, foundY, topX, topY, topX + 400, topY + 25, *15 %A_ScriptDir%\Images\Dota2-CardAnalyzer\%currentPercent%.png
+		
+		If ErrorLevel = 0
+			return %currentPercent%
 	}
 }

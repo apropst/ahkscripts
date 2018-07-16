@@ -5,11 +5,10 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%
 
 ; TODO
-; 1) Add images and processing for gold cards
-; 2) Create scoring algorithm
-; 3) Add processing of multiple cards per player
-; 4) Add processing of entire team list - maybe require manual changing between players?
-; 5) Add persistent storage of card info
+; 1) Create scoring algorithm
+; 2) Add processing of multiple cards per player
+; 3) Add processing of entire team list - maybe require manual changing between players?
+; 4) Add persistent storage of card info
 
 global cardLocation := {}
 global cardType :=
@@ -19,7 +18,11 @@ global percent := []
 global cardTypeList := ["Silver", "Gold", "Green"]
 global roleList := ["Core", "Offlane", "Support"]
 global modTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "GPM", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
+global coreScoreList := [0, 1.2, 2.3, 0.9, 1.3, 2.9, 0, 0.9, 4.4, 3.5, 2.3, 3.4]
+global offlaneScoreList := [0, 0, 0, 0.9, 0, 0, 0, 0, 4.4, 3.5, 2.3, 0]
+global supportScoreList := [1.8, 0, 0, 0.9, 0, 0, 7, 0, 4.4, 3.5, 2.3, 0]
 global percentList := ["5", "10", "15", "20", "25"]
+global cardScore := 0
 
 IfWinExist Dota 2
 {
@@ -77,7 +80,11 @@ GetMods()
 		If ErrorLevel = 0
 		{
 			modType.Push(currentModType)
-			percent.Push(GetPercent(foundX, foundY))
+			modPercent := GetPercent(foundX, foundY)
+			percent.Push(modPercent)
+			
+			StringLower, roleLower, playerRole
+			cardScore := cardScore + (%roleLower%ScoreList[index] * (modPercent / 100))
 		}
 	}
 }
@@ -110,11 +117,22 @@ GenerateDebug()
 	}
 	
 	If modType.Length() > 0
+	{
 		messageString .= "`n"
-	
-	messageString .= "Top Right: " cardLocation.topLeftX "x" cardLocation.topLeftY "`n"
-	
-	messageString .= "Bottom Right: " cardLocation.bottomRightX "x" cardLocation.bottomRightY "`n"
+		messageString .= "Card Score: " TrimNumberStr(cardScore)
+	}
 	
 	return messageString
+}
+
+TrimNumberStr(num)
+{
+	Loop, % StrLen(num)
+	{
+		stringright, tester, num, 1
+		If (tester = "0")
+			stringtrimright, num, num, 1
+	}
+	
+	return num
 }

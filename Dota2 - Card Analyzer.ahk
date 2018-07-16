@@ -5,10 +5,12 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%
 
 ; TODO
-; 1) Create scoring algorithm
-; 2) Add processing of multiple cards per player
-; 3) Add processing of entire team list - maybe require manual changing between players?
-; 4) Add persistent storage of card info
+; 1) Add processing of multiple cards per player
+; 2) Add processing of entire team list - maybe require manual changing between players?
+; 3) Add persistent storage of card info
+; 4) Integrate TI8 fantasy algorithm
+; 5) Integrate TI7 player data
+; 6) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
 
 global cardLocation := {}
 global cardType :=

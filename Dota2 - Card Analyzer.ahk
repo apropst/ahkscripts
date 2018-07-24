@@ -6,12 +6,15 @@ SetWorkingDir %A_ScriptDir%
 
 ; TODO
 ; 1) Add processing of multiple cards per player
-; 2) Add processing of entire team list - maybe require manual changing between players?
-; 3) Add persistent storage of card info
-; 4) Integrate TI8 fantasy algorithm
-; 5) Integrate TI7 player data
-; 6) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
+; 2) Add logical cut-off for image searches, stop after 3 mods are found for silver and 5 for gold
+; 3) Add processing of entire team list - maybe require manual changing between players?
+; 4) Add persistent storage of card info
+; 5) Integrate TI8 fantasy algorithm
+; 6) Integrate TI7 player data
+; 7) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
 
+global cardList := []
+global cardIndex := 1
 global cardLocation := {}
 global cardType :=
 global playerRole :=
@@ -42,13 +45,18 @@ IfWinExist Dota 2
 }
 ExitApp
 
+ImageSearch(ByRef x, ByRef y, x1, y1, x2, y2, file)
+{
+	ImageSearch, x, y, % x1, % y1, % x2, % y2, % file
+	
+	return !ErrorLevel
+}
+
 GetCardType()
 {
 	For index, currentCardType in cardTypeList
 	{
-		ImageSearch, topLeftX, topLeftY, 0, 0, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\Images\Dota2-CardAnalyzer\Corners\CardTopLeft%currentCardType%.png
-		
-		If ErrorLevel = 0
+		If ImageSearch(topLeftX, topLeftY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir "\Images\Dota2-CardAnalyzer\Corners\CardTopLeft" currentCardType ".png")
 		{
 			ImageSearch, bottomRightX, bottomRightY, topLeftX, topLeftY, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\Images\Dota2-CardAnalyzer\Corners\CardBottomRight%currentCardType%.png
 			
@@ -66,9 +74,7 @@ GetRole()
 {
 	For index, playerRole in roleList
 	{
-		ImageSearch, foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, %A_ScriptDir%\Images\Dota2-CardAnalyzer\Roles\%playerRole%%cardType%.png
-		
-		If ErrorLevel = 0
+		If ImageSearch(foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, "*1 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Roles\" playerRole cardType ".png")
 			return %playerRole%
 	}
 }
@@ -77,9 +83,7 @@ GetMods()
 {
 	For index, currentModType in modTypeList
 	{		
-		ImageSearch, foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, *30 %A_ScriptDir%\Images\Dota2-CardAnalyzer\Mods\%currentModType%%cardType%.png
-		
-		If ErrorLevel = 0
+		If ImageSearch(foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, "*30 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Mods\" currentModType cardType ".png")
 		{
 			modType.Push(currentModType)
 			modPercent := GetPercent(foundX, foundY)
@@ -97,9 +101,7 @@ GetPercent(topX, topY)
 	{
 		currentPercent := percentList[indexPer]
 		
-		ImageSearch, foundX, foundY, topX, topY, topX + 400, topY + 25, *40 %A_ScriptDir%\Images\Dota2-CardAnalyzer\Percents\%currentPercent%%cardType%.png
-		
-		If ErrorLevel = 0
+		If ImageSearch(foundX, foundY, topX, topY, topX + 400, topY + 25, "*40 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Percents\" currentPercent cardType ".png")
 			return %currentPercent%
 	}
 }

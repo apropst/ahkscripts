@@ -13,16 +13,6 @@ SetWorkingDir %A_ScriptDir%
 ; 6) Integrate TI7 player data
 ; 7) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
 
-global cardList := []
-global cardIndex := 1
-global cardLocation := {}
-global cardType :=
-global playerRole :=
-global modType := []
-global percent := []
-global cardTypeList := ["Silver", "Gold", "Green"]
-global roleList := ["Core", "Offlane", "Support"]
-global modTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "GPM", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
 global coreScoreList := [0, 1.2, 2.3, 0.9, 1.3, 2.9, 0, 0.9, 4.4, 3.5, 2.3, 3.4]
 global offlaneScoreList := [0, 0, 0, 0.9, 0, 0, 0, 0, 4.4, 3.5, 2.3, 0]
 global supportScoreList := [1.8, 0, 0, 0.9, 0, 0, 7, 0, 4.4, 3.5, 2.3, 0]
@@ -33,13 +23,21 @@ IfWinExist Dota 2
 {
 	WinActivate
 	
-	cardType := GetCardType()
+	cardTypeList := ["Silver", "Gold", "Green"]
+	roleList := ["Core", "Offlane", "Support"]
+	modTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "GPM", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
+	modType := []
+	percent := []
 	
-	playerRole := GetRole()
+	cardLocation := GetCardLocation(cardTypeList)
 	
-	GetMods()
+	cardType := GetCardType(cardTypeList, cardLocation)
 	
-	messageString := GenerateDebug()
+	playerRole := GetRole(roleList, cardLocation, cardType)
+	
+	GetMods(modType, percent, modTypeList, cardLocation, cardType, playerRole)
+	
+	messageString := GenerateDebug(cardType, playerRole, modType, percent)
 	
 	MsgBox %messageString%
 }
@@ -52,25 +50,34 @@ ImageSearch(ByRef x, ByRef y, x1, y1, x2, y2, file)
 	return !ErrorLevel
 }
 
-GetCardType()
+GetCardLocation(cardTypeList)
 {
+	cardLocation := {}
+	
 	For index, currentCardType in cardTypeList
 	{
-		If ImageSearch(topLeftX, topLeftY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir "\Images\Dota2-CardAnalyzer\Corners\CardTopLeft" currentCardType ".png")
+		If ImageSearch(cardLocation.topLeftX, cardLocation.topLeftY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir "\Images\Dota2-CardAnalyzer\Corners\CardTopLeft" currentCardType ".png")
 		{
-			ImageSearch, bottomRightX, bottomRightY, topLeftX, topLeftY, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\Images\Dota2-CardAnalyzer\Corners\CardBottomRight%currentCardType%.png
+			ImageSearch(bottomRightX, bottomRightY, cardLocation.topLeftX, cardLocation.topLeftY, A_ScreenWidth, A_ScreenHeight, A_ScriptDir "\Images\Dota2-CardAnalyzer\Corners\CardBottomRight" currentCardType ".png")
 			
-			cardLocation.topLeftX := topLeftX
-			cardLocation.topLeftY := topLeftY
 			cardLocation.bottomRightX := bottomRightX
 			cardLocation.bottomRightY := bottomRightY
 			
-			return %currentCardType%
+			return cardLocation
 		}
 	}
 }
 
-GetRole()
+GetCardType(cardTypeList, cardLocation)
+{
+	For index, currentCardType in cardTypeList
+	{
+		If ImageSearch(topLeftX, topLeftY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, A_ScriptDir "\Images\Dota2-CardAnalyzer\Corners\CardTopLeft" currentCardType ".png")
+			return %currentCardType%
+	}
+}
+
+GetRole(roleList, cardLocation, cardType)
 {
 	For index, playerRole in roleList
 	{
@@ -79,14 +86,14 @@ GetRole()
 	}
 }
 
-GetMods()
+GetMods(ByRef modType, ByRef percent, modTypeList, cardLocation, cardType, playerRole)
 {
 	For index, currentModType in modTypeList
 	{		
 		If ImageSearch(foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, "*30 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Mods\" currentModType cardType ".png")
 		{
 			modType.Push(currentModType)
-			modPercent := GetPercent(foundX, foundY)
+			modPercent := GetPercent(foundX, foundY, cardType)
 			percent.Push(modPercent)
 			
 			StringLower, roleLower, playerRole
@@ -95,18 +102,18 @@ GetMods()
 	}
 }
 
-GetPercent(topX, topY)
+GetPercent(topX, topY, cardType)
 {
 	For indexPer, elementPer in percentList
 	{
 		currentPercent := percentList[indexPer]
 		
-		If ImageSearch(foundX, foundY, topX, topY, topX + 400, topY + 25, "*40 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Percents\" currentPercent cardType ".png")
+		If ImageSearch(foundX, foundY, topX + 300, topY, topX + 400, topY + 25, "*40 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Percents\" currentPercent cardType ".png")
 			return %currentPercent%
 	}
 }
 
-GenerateDebug()
+GenerateDebug(cardType, playerRole, modType, percent)
 {
 	messageString := "Card Type: " cardType "`n`n"
 	

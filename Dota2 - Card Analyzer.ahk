@@ -13,19 +13,11 @@ SetWorkingDir %A_ScriptDir%
 ; 6) Integrate TI7 player data
 ; 7) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
 
-global coreScoreList := [0, 1.2, 2.3, 0.9, 1.3, 2.9, 0, 0.9, 4.4, 3.5, 2.3, 3.4]
-global offlaneScoreList := [0, 0, 0, 0.9, 0, 0, 0, 0, 4.4, 3.5, 2.3, 0]
-global supportScoreList := [1.8, 0, 0, 0.9, 0, 0, 7, 0, 4.4, 3.5, 2.3, 0]
-global percentList := ["5", "10", "15", "20", "25"]
-global cardScore := 0
-
 IfWinExist Dota 2
 {
 	WinActivate
 	
 	cardTypeList := ["Silver", "Gold", "Green"]
-	roleList := ["Core", "Offlane", "Support"]
-	modTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "GPM", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
 	modType := []
 	percent := []
 	
@@ -33,11 +25,11 @@ IfWinExist Dota 2
 	
 	cardType := GetCardType(cardTypeList, cardLocation)
 	
-	playerRole := GetRole(roleList, cardLocation, cardType)
+	playerRole := GetRole(cardLocation, cardType)
 	
-	GetMods(modType, percent, modTypeList, cardLocation, cardType, playerRole)
+	cardScore := GetMods(modType, percent, cardLocation, cardType, playerRole)
 	
-	messageString := GenerateDebug(cardType, playerRole, modType, percent)
+	messageString := GenerateDebug(cardType, playerRole, modType, percent, cardScore)
 	
 	MsgBox %messageString%
 }
@@ -77,8 +69,10 @@ GetCardType(cardTypeList, cardLocation)
 	}
 }
 
-GetRole(roleList, cardLocation, cardType)
+GetRole(cardLocation, cardType)
 {
+	roleList := ["Core", "Offlane", "Support"]
+
 	For index, playerRole in roleList
 	{
 		If ImageSearch(foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, "*1 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Roles\" playerRole cardType ".png")
@@ -86,8 +80,14 @@ GetRole(roleList, cardLocation, cardType)
 	}
 }
 
-GetMods(ByRef modType, ByRef percent, modTypeList, cardLocation, cardType, playerRole)
+GetMods(ByRef modType, ByRef percent, cardLocation, cardType, playerRole)
 {
+	modTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "GPM", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
+	coreScoreList := [0, 1.2, 2.3, 0.9, 1.3, 2.9, 0, 0.9, 4.4, 3.5, 2.3, 3.4]
+	offlaneScoreList := [0, 0, 0, 0.9, 0, 0, 0, 0, 4.4, 3.5, 2.3, 0]
+	supportScoreList := [1.8, 0, 0, 0.9, 0, 0, 7, 0, 4.4, 3.5, 2.3, 0]
+	cardScore := 0
+	
 	For index, currentModType in modTypeList
 	{		
 		If ImageSearch(foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, "*30 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Mods\" currentModType cardType ".png")
@@ -100,10 +100,14 @@ GetMods(ByRef modType, ByRef percent, modTypeList, cardLocation, cardType, playe
 			cardScore := cardScore + (%roleLower%ScoreList[index] * (modPercent / 100))
 		}
 	}
+	
+	return cardScore
 }
 
 GetPercent(topX, topY, cardType)
 {
+	percentList := ["5", "10", "15", "20", "25"]
+
 	For indexPer, elementPer in percentList
 	{
 		currentPercent := percentList[indexPer]
@@ -113,7 +117,7 @@ GetPercent(topX, topY, cardType)
 	}
 }
 
-GenerateDebug(cardType, playerRole, modType, percent)
+GenerateDebug(cardType, playerRole, modType, percent, cardScore)
 {
 	messageString := "Card Type: " cardType "`n`n"
 	

@@ -35,21 +35,17 @@ IfWinExist Dota 2
 }
 ExitApp
 
-ImageSearch(ByRef x, ByRef y, x1, y1, x2, y2, file)
-{
+ImageSearch(ByRef x, ByRef y, x1, y1, x2, y2, file) {
 	ImageSearch, x, y, % x1, % y1, % x2, % y2, % file
 	
 	return !ErrorLevel
 }
 
-GetCardLocation(cardTypeList)
-{
+GetCardLocation(cardTypeList) {
 	cardLocation := {}
 	
-	For index, currentCardType in cardTypeList
-	{
-		If ImageSearch(cardLocation.topLeftX, cardLocation.topLeftY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir "\Images\Dota2-CardAnalyzer\Corners\CardTopLeft" currentCardType ".png")
-		{
+	For index, currentCardType in cardTypeList {
+		If ImageSearch(cardLocation.topLeftX, cardLocation.topLeftY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir "\Images\Dota2-CardAnalyzer\Corners\CardTopLeft" currentCardType ".png") {
 			ImageSearch(bottomRightX, bottomRightY, cardLocation.topLeftX, cardLocation.topLeftY, A_ScreenWidth, A_ScreenHeight, A_ScriptDir "\Images\Dota2-CardAnalyzer\Corners\CardBottomRight" currentCardType ".png")
 			
 			cardLocation.bottomRightX := bottomRightX
@@ -60,38 +56,31 @@ GetCardLocation(cardTypeList)
 	}
 }
 
-GetCardType(cardTypeList, cardLocation)
-{
-	For index, currentCardType in cardTypeList
-	{
+GetCardType(cardTypeList, cardLocation) {
+	For index, currentCardType in cardTypeList {
 		If ImageSearch(topLeftX, topLeftY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, A_ScriptDir "\Images\Dota2-CardAnalyzer\Corners\CardTopLeft" currentCardType ".png")
 			return %currentCardType%
 	}
 }
 
-GetRole(cardLocation, cardType)
-{
+GetRole(cardLocation, cardType) {
 	roleList := ["Core", "Offlane", "Support"]
 
-	For index, playerRole in roleList
-	{
+	For index, playerRole in roleList {
 		If ImageSearch(foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, "*1 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Roles\" playerRole cardType ".png")
 			return %playerRole%
 	}
 }
 
-GetMods(ByRef modType, ByRef percent, cardLocation, cardType, playerRole)
-{
+GetMods(ByRef modType, ByRef percent, cardLocation, cardType, playerRole) {
 	modTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "GPM", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
 	coreScoreList := [0, 1.2, 2.3, 0.9, 1.3, 2.9, 0, 0.9, 4.4, 3.5, 2.3, 3.4]
 	offlaneScoreList := [0, 0, 0, 0.9, 0, 0, 0, 0, 4.4, 3.5, 2.3, 0]
 	supportScoreList := [1.8, 0, 0, 0.9, 0, 0, 7, 0, 4.4, 3.5, 2.3, 0]
 	cardScore := 0
 	
-	For index, currentModType in modTypeList
-	{		
-		If ImageSearch(foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, "*30 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Mods\" currentModType cardType ".png")
-		{
+	For index, currentModType in modTypeList {		
+		If ImageSearch(foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, "*30 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Mods\" currentModType cardType ".png") {
 			modType.Push(currentModType)
 			modPercent := GetPercent(foundX, foundY, cardType)
 			percent.Push(modPercent)
@@ -104,12 +93,10 @@ GetMods(ByRef modType, ByRef percent, cardLocation, cardType, playerRole)
 	return cardScore
 }
 
-GetPercent(topX, topY, cardType)
-{
+GetPercent(topX, topY, cardType) {
 	percentList := ["5", "10", "15", "20", "25"]
 
-	For indexPer, elementPer in percentList
-	{
+	For indexPer, elementPer in percentList {
 		currentPercent := percentList[indexPer]
 		
 		If ImageSearch(foundX, foundY, topX + 300, topY, topX + 400, topY + 25, "*40 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Percents\" currentPercent cardType ".png")
@@ -117,8 +104,7 @@ GetPercent(topX, topY, cardType)
 	}
 }
 
-GenerateDebug(cardType, playerRole, modType, percent, cardScore)
-{
+GenerateDebug(cardType, playerRole, modType, percent, cardScore) {
 	messageString := "Card Type: " cardType "`n`n"
 	
 	messageString .= "Role: " playerRole "`n"
@@ -126,13 +112,11 @@ GenerateDebug(cardType, playerRole, modType, percent, cardScore)
 	If modType.Length() > 0
 		messageString .= "`nFound the following mods:`n"
 	
-	for index, element in modType
-	{
+	for index, element in modType {
 		messageString .= modType[index] ": " percent[index] "%`n"
 	}
 	
-	If modType.Length() > 0
-	{
+	If modType.Length() > 0 {
 		messageString .= "`n"
 		messageString .= "Card Score: " TrimNumberStr(cardScore)
 	}
@@ -140,10 +124,8 @@ GenerateDebug(cardType, playerRole, modType, percent, cardScore)
 	return messageString
 }
 
-TrimNumberStr(num)
-{
-	Loop, % StrLen(num)
-	{
+TrimNumberStr(num) {
+	Loop, % StrLen(num) {
 		stringright, tester, num, 1
 		If (tester = "0")
 			stringtrimright, num, num, 1

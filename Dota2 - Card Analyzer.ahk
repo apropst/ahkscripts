@@ -22,7 +22,7 @@ IfWinExist Dota 2
 	
 	cardLocation := GetCardLocation(cardTypeList)
 	
-	While ImageSearch(backButtonX, backButtonY, cardLocation.topLeftX, cardLocation.bottomRightY, cardLocation.bottomRightX, cardLocation.bottomRightY + 200, A_ScriptDir "\Images\Dota2-CardAnalyzer\Buttons\BackButtonInactive.png") {
+	Loop {
 		modList := []
 		percent := []
 		
@@ -33,14 +33,18 @@ IfWinExist Dota 2
 		card%cardNum%.modList := modList
 		card%cardNum%.percent := percent
 		
-		MouseClick, left, % backButtonX + 50, % backButtonY + 10
+		If ImageSearch(backButtonX, backButtonY, cardLocation.topLeftX, cardLocation.bottomRightY, cardLocation.bottomRightX, cardLocation.bottomRightY + 200, A_ScriptDir "\Images\Dota2-CardAnalyzer\Buttons\BackButtonInactive.png") {
+			MouseClick, left, % backButtonX + 50, % backButtonY + 10
 		
-		cardNum++
-		
-		Sleep, 5000
+			cardNum++
+			
+			Sleep, 225
+		} else {
+			break
+		}
 	}
 	
-	cardNum := 1
+	cardNum := 2
 	
 	messageString := GenerateDebug(card%cardNum%.cardType, card%cardNum%.playerRole, card%cardNum%.modList, card%cardNum%.percent, card%cardNum%.cardScore, cardLocation)
 	

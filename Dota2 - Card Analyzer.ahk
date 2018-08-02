@@ -18,7 +18,7 @@ IfWinExist Dota 2
 	WinActivate
 	
 	cardTypeList := ["Silver", "Gold", "Green"]
-	cardNum := 1
+	cardList := {}
 	
 	cardLocation := GetCardLocation(cardTypeList)
 	
@@ -26,27 +26,26 @@ IfWinExist Dota 2
 		modList := []
 		percent := []
 		
-		card%cardNum% := {}
-		card%cardNum%.cardType := GetCardType(cardTypeList, cardLocation)
-		card%cardNum%.playerRole := GetRole(cardLocation, card%cardNum%.cardType)
-		card%cardNum%.cardScore := GetMods(modList, percent, cardLocation, card%cardNum%.cardType, card%cardNum%.playerRole)
-		card%cardNum%.modList := modList
-		card%cardNum%.percent := percent
+		card := {}
+		card.cardType := GetCardType(cardTypeList, cardLocation)
+		card.playerRole := GetRole(cardLocation, card%cardNum%.cardType)
+		card.cardScore := GetMods(modList, percent, cardLocation, card%cardNum%.cardType, card%cardNum%.playerRole)
+		card.modList := modList
+		card.percent := percent
+		cardList.Push(card)
 		
-		If ImageSearch(backButtonX, backButtonY, cardLocation.topLeftX, cardLocation.bottomRightY, cardLocation.bottomRightX, cardLocation.bottomRightY + 200, A_ScriptDir "\Images\Dota2-CardAnalyzer\Buttons\BackButtonInactive.png") {
-			MouseClick, left, % backButtonX + 50, % backButtonY + 10
-		
-			cardNum++
+		If ImageSearch(nextButtonX, nextButtonY, cardLocation.topLeftX, cardLocation.bottomRightY, cardLocation.bottomRightX, cardLocation.bottomRightY + 200, "*5 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Buttons\NextButtonActive.png") {
+			MouseClick, left, % nextButtonX + 5, % nextButtonY + 5
 			
-			Sleep, 225
+			MouseMove, 100, 100
+			
+			Sleep, 250
 		} else {
 			break
 		}
 	}
 	
-	cardNum := 2
-	
-	messageString := GenerateDebug(card%cardNum%.cardType, card%cardNum%.playerRole, card%cardNum%.modList, card%cardNum%.percent, card%cardNum%.cardScore, cardLocation)
+	messageString := GenerateDebug(cardList)
 	
 	MsgBox %messageString%
 }
@@ -121,21 +120,30 @@ GetPercent(topX, topY, cardType) {
 	}
 }
 
-GenerateDebug(cardType, playerRole, modList, percent, cardScore, cardLocation) {
-	messageString := "Card Type: " cardType "`n`n"
+GenerateDebug(cardList) {
+	messageString := ""
 	
-	messageString .= "Role: " playerRole "`n"
+	For index, card in cardList {
+		If index > 1
+			messageString .= "`n"
+		
+		messageString .= "===== Card " index " =====`n`n"
+		
+		messageString .= "Card Type: " card.cardType "`n`n"
 	
-	If modList.Length() > 0
-		messageString .= "`nFound the following mods:`n"
-	
-	for index, element in modList {
-		messageString .= modList[index] ": " percent[index] "%`n"
-	}
-	
-	If modList.Length() > 0 {
-		messageString .= "`n"
-		messageString .= "Card Score: " TrimNumberStr(cardScore)
+		messageString .= "Role: " card.playerRole "`n"
+		
+		If card.modList.Length() > 0
+			messageString .= "`nFound the following mods:`n"
+		
+		For index2, element in card.modList {
+			messageString .= card.modList[index2] ": " card.percent[index2] "%`n"
+		}
+		
+		If card.modList.Length() > 0 {
+			messageString .= "`n"
+			messageString .= "Card Score: " TrimNumberStr(card.cardScore) "`n"
+		}
 	}
 	
 	return messageString

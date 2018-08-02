@@ -5,13 +5,12 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%
 
 ; TODO
-; 1) Add processing of multiple cards per player - need to convert to do-while so that singles will get processed and so that the last card in a stack gets processed
-; 2) Add logical cut-off for image searches, stop after 3 mods are found for silver and 5 for gold
-; 3) Add processing of entire team list - maybe require manual changing between players?
-; 4) Add persistent storage of card info
-; 5) Integrate TI8 fantasy algorithm
-; 6) Integrate TI7 player data
-; 7) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
+; 1) Add logical cut-off for image searches, stop after 3 mods are found for silver and 5 for gold
+; 2) Add processing of entire team list - maybe require manual changing between players?
+; 3) Add persistent storage of card info
+; 4) Integrate TI8 fantasy algorithm
+; 5) Integrate TI7 player data
+; 6) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
 
 IfWinExist Dota 2
 {

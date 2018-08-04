@@ -10,6 +10,7 @@ SetWorkingDir %A_ScriptDir%
 ; 3) Integrate TI8 fantasy algorithm
 ; 4) Integrate TI7 player data
 ; 5) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
+; 6) Add error checking - validate number of mods found matches card type
 
 IfWinExist Dota 2
 {
@@ -19,16 +20,20 @@ IfWinExist Dota 2
 	cardList := {}
 	
 	cardLocation := GetCardLocation(cardTypeList)
+	playerTeam := GetTeam(cardLocation)
+	playerName := GetPlayer(cardLocation, playerTeam)
 	
 	Loop {
 		modList := []
 		percent := []
 		
 		card := {}
+		card.playerTeam := playerTeam
+		card.playerName := playerName
 		card.cardType := GetCardType(cardTypeList, cardLocation)
-		card.playerRole := GetRole(cardLocation, card%cardNum%.cardType)
+		card.playerRole := GetRole(cardLocation, card.cardType)
 		If card.cardType != "Green"
-			card.cardScore := GetMods(modList, percent, cardLocation, card%cardNum%.cardType, card%cardNum%.playerRole)
+			card.cardScore := GetMods(modList, percent, cardLocation, card.cardType, card.playerRole)
 		card.modList := modList
 		card.percent := percent
 		cardList.Push(card)
@@ -68,6 +73,41 @@ GetCardLocation(cardTypeList) {
 			
 			return cardLocation
 		}
+	}
+}
+
+GetTeam(cardLocation) {
+	teamList := ["EvilGeniuses", "Fnatic", "InvictusGaming", "Mineski", "Newbee", "OG", "OpTicGaming", "paiNGaming", "PSGLGD", "TeamLiquid", "TeamSecret", "TeamSerenity", "TNCPredator", "VGJStorm", "VGJThunder", "ViciGaming", "VirtusPro", "Winstrike"]
+	
+	For index, currentTeam in teamList {
+		If ImageSearch(topLeftX, topLeftY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, A_ScriptDir "\Images\Dota2-CardAnalyzer\Teams\" currentTeam ".png")
+			return %currentTeam%
+	}
+}
+
+GetPlayer(cardLocation, playerTeam) {
+	EvilGeniuses := ["Cr1t-", "Fly", "rtzYBa", "s4", "SumaiL"]
+	Fnatic := ["Abed", "DJ", "EternaLEnVy", "pieliedie", "Universe"]
+	InvictusGaming := ["Agressif", "BoBoKa", "Q", "Srf", "Xxs"]
+	Mineski := ["iceiceice", "Jabz", "Moonn", "Mushi", "ninjaboogie"]
+	Newbee := ["Faith", "kaka", "kpii", "Moogy", "Sccc"]
+	OG := ["ana", "BigDaddyN0tail", "Ceb", "JerAx", "Topson"]
+	OpTicGaming := ["33", "CCnC", "Pajkatt", "Peterpandam", "zai"]
+	paiNGaming := ["Duster", "hFnk3M", "Kingrd", "tavo", "w33"]
+	PSGLGD := ["Ame", "Chalice", "fy", "SomnusM", "xNova"]
+	TeamLiquid := ["Gh", "KuroKy", "MATUMBAMAN", "MinD_ContRol", "Miracle-"]
+	TeamSecret := ["Ace", "Fata", "MidOne", "Puppey", "YapzOr"]
+	TeamSerenity := ["Pyw", "XCJ", "XinQ", "zhizhizhi", "Zyd"]
+	TNCPredator := ["Armel", "Kuku", "Raven", "SamH", "Tims"]
+	VGJStorm := ["MSS-", "Resolut1on", "Sneyking", "SVG", "YS"]
+	VGJThunder := ["ddc", "Fade", "Freeze", "Sylar", "Yang"]
+	ViciGaming := ["eLeVen", "Fenrir", "LaNm", "Ori", "Paparazi"]
+	VirtusPro := ["9pasha", "No[o]ne-", "RAMZES666", "RodjER", "Solo"]
+	Winstrike := ["ALWAYSWANNAFLY", "Iceberg", "Nofear", "nongrata", "Silent"]
+	
+	For index, currentPlayer in %playerTeam% {
+		If ImageSearch(topLeftX, topLeftY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, A_ScriptDir "\Images\Dota2-CardAnalyzer\Players\" playerTeam "\" currentPlayer ".png")
+			return %currentPlayer%
 	}
 }
 
@@ -126,7 +166,7 @@ GetPercent(topX, topY, cardType) {
 }
 
 GenerateDebug(cardList) {
-	messageString := ""
+	messageString := "Name: " cardList[1].playerName "`n`nTeam: " cardList[1].playerTeam "`n`nRole: " cardList[1].playerRole "`n`n"
 	
 	For index, card in cardList {
 		If index > 1
@@ -135,11 +175,9 @@ GenerateDebug(cardList) {
 		messageString .= "===== Card " index " =====`n`n"
 		
 		messageString .= "Card Type: " card.cardType "`n`n"
-	
-		messageString .= "Role: " card.playerRole "`n"
 		
 		If card.modList.Length() > 0
-			messageString .= "`nFound the following mods:`n"
+			messageString .= "Found the following mods:`n"
 		
 		For index2, element in card.modList {
 			messageString .= card.modList[index2] ": " card.percent[index2] "%`n"

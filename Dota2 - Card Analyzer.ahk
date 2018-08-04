@@ -5,12 +5,11 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%
 
 ; TODO
-; 1) Add logical cut-off for image searches, stop after 3 mods are found for silver and 5 for gold
-; 2) Add processing of entire team list - maybe require manual changing between players?
-; 3) Add persistent storage of card info
-; 4) Integrate TI8 fantasy algorithm
-; 5) Integrate TI7 player data
-; 6) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
+; 1) Add processing of entire team list - maybe require manual changing between players?
+; 2) Add persistent storage of card info
+; 3) Integrate TI8 fantasy algorithm
+; 4) Integrate TI7 player data
+; 5) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
 
 IfWinExist Dota 2
 {
@@ -28,7 +27,8 @@ IfWinExist Dota 2
 		card := {}
 		card.cardType := GetCardType(cardTypeList, cardLocation)
 		card.playerRole := GetRole(cardLocation, card%cardNum%.cardType)
-		card.cardScore := GetMods(modList, percent, cardLocation, card%cardNum%.cardType, card%cardNum%.playerRole)
+		If card.cardType != "Green"
+			card.cardScore := GetMods(modList, percent, cardLocation, card%cardNum%.cardType, card%cardNum%.playerRole)
 		card.modList := modList
 		card.percent := percent
 		cardList.Push(card)
@@ -93,8 +93,9 @@ GetMods(ByRef modList, ByRef percent, cardLocation, cardType, playerRole) {
 	offlaneScoreList := [0, 0, 0, 0.9, 0, 0, 0, 0, 4.4, 3.5, 2.3, 0]
 	supportScoreList := [1.8, 0, 0, 0.9, 0, 0, 7, 0, 4.4, 3.5, 2.3, 0]
 	cardScore := 0
+	matches := 0
 	
-	For index, currentModType in modTypeList {		
+	For index, currentModType in modTypeList {
 		If ImageSearch(foundX, foundY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, "*30 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Mods\" currentModType cardType ".png") {
 			modList.Push(currentModType)
 			modPercent := GetPercent(foundX, foundY, cardType)
@@ -102,6 +103,11 @@ GetMods(ByRef modList, ByRef percent, cardLocation, cardType, playerRole) {
 			
 			StringLower, roleLower, playerRole
 			cardScore := cardScore + (%roleLower%ScoreList[index] * (modPercent / 100))
+			
+			matches++
+			
+			If (cardType = "Silver" && matches > 2) || (cardType = "Gold" && matches > 4)
+				break
 		}
 	}
 	

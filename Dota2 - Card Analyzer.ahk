@@ -4,17 +4,23 @@ ListLines Off
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
+#Include xml.ahk
+
 ; TODO
 ; 1) Add processing of entire team list - maybe require manual changing between players?
-; 2) Add persistent storage of card info
-; 3) Integrate TI8 fantasy algorithm
-; 4) Integrate TI7 player data
-; 5) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
-; 6) Add error checking - validate number of mods found matches card type
+; 2) Integrate TI8 fantasy algorithm
+; 3) Integrate TI7 player data
+; 4) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
+; 5) Add error checking - validate number of mods found matches card type
+; 6) Add cleaner handling of green cards for persistent storage (don't store blank score or mods)
+; 7) Resolve issue where persistent storage stores 0.00 score as blank
+; 8) Add edge-case handling for situations like where players are on the last card and try and save a stack, but it only saves that last card
 
 IfWinExist Dota 2
 {
 	WinActivate
+	
+	data := LoadData()
 	
 	cardTypeList := ["Silver", "Gold", "Green"]
 	cardList := {}
@@ -49,6 +55,10 @@ IfWinExist Dota 2
 		}
 	}
 	
+	data := SaveCards(data, cardList)
+	
+	data.writeXML(A_ScriptDir "\CardData.xml")
+	
 	messageString := GenerateDebug(cardList)
 	
 	MsgBox %messageString%
@@ -59,6 +69,18 @@ ImageSearch(ByRef x, ByRef y, x1, y1, x2, y2, file) {
 	ImageSearch, x, y, % x1, % y1, % x2, % y2, % file
 	
 	return !ErrorLevel
+}
+
+LoadData() {
+	If FileExist("CardData.xml") {
+		xmlFile := new xml()
+		xmlFile.load("CardData.xml")
+	} else {
+		xmlFile := new xml("<Data/>")
+		xmlFile.writeXML(A_ScriptDir "\CardData.xml")
+	}
+	
+	return xmlFile
 }
 
 GetCardLocation(cardTypeList) {
@@ -190,6 +212,69 @@ GenerateDebug(cardList) {
 	}
 	
 	return messageString
+}
+
+SaveCards(xmlData, cardList) {
+	teamIndex := 1
+	playerIndex := 1
+
+	If !TeamExists(xmlData, cardList, teamIndex) {
+		xmlData.addElement("Team", "Data")
+		xmlData.addElement("Name", "//Team[" teamIndex "]", cardList[1].playerTeam)
+		xmlData.addElement("Players", "//Team[" teamIndex "]")
+	}
+	
+	If !PlayerExists(xmlData, cardList, teamIndex, playerIndex) {
+		xmlData.addElement("Player", "//Team[" teamIndex "]/Players")
+		xmlData.addElement("Name", "//Team[" teamIndex "]/Players/Player[" playerIndex "]", cardList[1].playerName)
+		xmlData.addElement("Position", "//Team[" teamIndex "]/Players/Player[" playerIndex "]", cardList[1].playerRole)
+		xmlData.addElement("Cards", "//Team[" teamIndex "]/Players/Player[" playerIndex "]")
+	} else {
+		deleteNode := xmlData.selectSingleNode("//Team[" teamIndex "]/Players/Player[" playerIndex "]/Cards")
+		deleteNode.ParentNode.RemoveChild(deleteNode)
+		xmlData.addElement("Cards", "//Team[" teamIndex "]/Players/Player[" playerIndex "]")
+	}
+	
+	For index, card in cardList {
+		xmlData.addElement("Card", "//Team[" teamIndex "]/Players/Player[" playerIndex "]/Cards")
+		xmlData.addElement("Type", "//Team[" teamIndex "]/Players/Player[" playerIndex "]/Cards/Card[" index "]", card.cardType)
+		xmlData.addElement("Score", "//Team[" teamIndex "]/Players/Player[" playerIndex "]/Cards/Card[" index "]", TrimNumberStr(card.cardScore))
+		xmlData.addElement("Mods", "//Team[" teamIndex "]/Players/Player[" playerIndex "]/Cards/Card[" index "]")
+		
+		For index2, element in card.modList {
+			xmlData.addElement("Mod", "//Team[" teamIndex "]/Players/Player[" playerIndex "]/Cards/Card[" index "]/Mods")
+			xmlData.addElement("Type", "//Team[" teamIndex "]/Players/Player[" playerIndex "]/Cards/Card[" index "]/Mods/Mod[" index2 "]", card.modList[index2])
+			xmlData.addElement("Percent", "//Team[" teamIndex "]/Players/Player[" playerIndex "]/Cards/Card[" index "]/Mods/Mod[" index2 "]", card.percent[index2])
+		}
+	}
+	
+	return xmlData
+}
+
+TeamExists(xmlData, cardList, ByRef teamIndex) {
+	For index, node in xmlData.getChildren("Data", "element") {
+		If xmlData.getText("//Team[" index "]/Name") = cardList[1].playerTeam {
+			teamIndex := index
+			return true
+		}
+		
+		teamIndex := ++index
+	}
+
+	return false
+}
+
+PlayerExists(xmlData, cardList, teamIndex, ByRef playerIndex) {
+	For index, node in xmlData.getChildren("//Team[" teamIndex "]/Players", "element") {
+		If xmlData.getText("//Team[" teamIndex "]/Players/Player[" index "]/Name") = cardList[1].playerName {
+			playerIndex := index
+			return true
+		}
+		
+		playerIndex := ++index
+	}
+	
+	return false
 }
 
 TrimNumberStr(num) {

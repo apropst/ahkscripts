@@ -14,7 +14,7 @@ SetWorkingDir %A_ScriptDir%
 ; 5) Add edge-case handling for situations like where players are on the last card and try and save a stack, but it only saves that last card
 ; 6) Add processing of entire team list - maybe require manual changing between players?
 
-$^1::
+$!1::
 	IfWinExist Dota 2
 	{
 		WinActivate
@@ -70,7 +70,7 @@ $^1::
 	}
 Return
 
-$^2::
+$!2::
 	IfWinExist Dota 2
 	{
 		WinActivate
@@ -124,7 +124,7 @@ $^2::
 	}
 Return
 
-$^3::
+$!3::
 	ExitApp
 Return
 

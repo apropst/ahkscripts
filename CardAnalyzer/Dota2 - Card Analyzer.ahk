@@ -7,63 +7,78 @@ SetWorkingDir %A_ScriptDir%
 #Include xml.ahk
 
 ; TODO
-; 1) Add processing of entire team list - maybe require manual changing between players?
-; 2) Integrate TI8 fantasy algorithm
-; 3) Integrate TI7 player data
-; 4) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
-; 5) Add error checking - validate number of mods found matches card type
-; 6) Add cleaner handling of green cards for persistent storage (don't store blank score or mods)
-; 7) Resolve issue where persistent storage stores 0.00 score as blank
-; 8) Add edge-case handling for situations like where players are on the last card and try and save a stack, but it only saves that last card
+; 1) Integrate TI8 fantasy algorithm
+; 2) Integrate TI7 player data
+; 3) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
+; 4) Add error checking - validate number of mods found matches card type
+; 5) Add cleaner handling of green cards for persistent storage (don't store blank score or mods)
+; 6) Resolve issue where persistent storage stores 0.00 score as blank
+; 7) Add edge-case handling for situations like where players are on the last card and try and save a stack, but it only saves that last card
+; 8) Add processing of entire team list - maybe require manual changing between players?
 
-IfWinExist Dota 2
-{
-	WinActivate
-	
-	data := LoadData()
-	
-	cardTypeList := ["Silver", "Gold", "Green"]
-	cardList := {}
-	
-	cardLocation := GetCardLocation(cardTypeList)
-	playerTeam := GetTeam(cardLocation)
-	playerName := GetPlayer(cardLocation, playerTeam)
-	
-	Loop {
-		modList := []
-		percent := []
+$^1::
+	IfWinExist Dota 2
+	{
+		WinActivate
 		
-		card := {}
-		card.playerTeam := playerTeam
-		card.playerName := playerName
-		card.cardType := GetCardType(cardTypeList, cardLocation)
-		card.playerRole := GetRole(cardLocation, card.cardType)
-		If card.cardType != "Green"
-			card.cardScore := GetMods(modList, percent, cardLocation, card.cardType, card.playerRole)
-		card.modList := modList
-		card.percent := percent
-		cardList.Push(card)
+		cardData := LoadData(PlayerStats, PlayerAvgFP, TeamSchedule)
+		playerStats := PlayerStats
+		playerAvgFp := PlayerAvgFP
+		teamSchedule := TeamSchedule
 		
-		If ImageSearch(nextButtonX, nextButtonY, cardLocation.topLeftX, cardLocation.bottomRightY, cardLocation.bottomRightX, cardLocation.bottomRightY + 200, "*5 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Buttons\NextButtonActive.png") {
-			MouseClick, left, % nextButtonX + 5, % nextButtonY + 5
+		cardTypeList := ["Silver", "Gold", "Green"]
+		cardList := {}
+		
+		cardLocation := GetCardLocation(cardTypeList)
+		playerTeam := GetTeam(cardLocation)
+		playerName := GetPlayer(cardLocation, playerTeam)
+		
+		Loop {
+			modList := []
+			percent := []
 			
-			MouseMove, 100, 100
+			card := {}
+			card.playerTeam := playerTeam
+			card.playerName := playerName
+			card.cardType := GetCardType(cardTypeList, cardLocation)
+			card.playerRole := GetRole(cardLocation, card.cardType)
+			If card.cardType != "Green"
+				card.cardScore := GetMods(modList, percent, cardLocation, card.cardType, card.playerRole)
+			card.modList := modList
+			card.percent := percent
+			cardList.Push(card)
 			
-			Sleep, 250
+			If ImageSearch(nextButtonX, nextButtonY, cardLocation.topLeftX, cardLocation.bottomRightY, cardLocation.bottomRightX, cardLocation.bottomRightY + 200, "*5 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Buttons\NextButtonActive.png") {
+				MouseClick, left, % nextButtonX + 5, % nextButtonY + 5
+				
+				MouseMove, 100, 100
+				
+				Sleep, 250
+			} else {
+				break
+			}
+		}
+		
+		If cardList[1].playerTeam != "" {
+			cardData := SaveCards(cardData, cardList)
+		
+			cardData.writeXML(A_ScriptDir "\CardData.xml")
+			
+			messageString := GenerateDebug(cardList)
+			
+			MsgBox %messageString%
 		} else {
-			break
+			MsgBox, "No card(s) found, please select a player and try again"
 		}
 	}
-	
-	data := SaveCards(data, cardList)
-	
-	data.writeXML(A_ScriptDir "\CardData.xml")
-	
-	messageString := GenerateDebug(cardList)
-	
-	MsgBox %messageString%
-}
-ExitApp
+Return
+
+$^2::
+Return
+
+$^3::
+	ExitApp
+Return
 
 ImageSearch(ByRef x, ByRef y, x1, y1, x2, y2, file) {
 	ImageSearch, x, y, % x1, % y1, % x2, % y2, % file
@@ -71,13 +86,68 @@ ImageSearch(ByRef x, ByRef y, x1, y1, x2, y2, file) {
 	return !ErrorLevel
 }
 
-LoadData() {
+LoadData(ByRef PlayerStats, ByRef PlayerAvgFP, ByRef TeamSchedule) {
+	If !FileExist("xml.ahk") {
+		MsgBox, "xml.ahk is missing. This program will not work without this file. Please add this file to the program folder and restart the program."
+		ExitApp
+	}
+
 	If FileExist("CardData.xml") {
 		xmlFile := new xml()
 		xmlFile.load("CardData.xml")
 	} else {
 		xmlFile := new xml("<Data/>")
 		xmlFile.writeXML(A_ScriptDir "\CardData.xml")
+	}
+	
+	FileCheckArray := []
+	
+	If FileExist("PlayerStats.xml") {
+		playerStats := new xml()
+		playerStats.load("PlayerStats.xml")
+		PlayerStats := playerStats
+	} else {
+		FileCheckArray.Push("PlayerStats.xml")
+	}
+	
+	If FileExist("PlayerAvgFP.xml") {
+		playerAvgFp := new xml()
+		playerAvgFp.load("PlayerAvgFP.xml")
+		PlayerAvgFP := playerAvgFp
+	} else {
+		FileCheckArray.Push("PlayerAvgFP.xml")
+	}
+	
+	If FileExist("TeamSchedule.xml") {
+		teamSchedule := new xml()
+		teamSchedule.load("TeamSchedule.xml")
+		TeamSchedule := teamSchedule
+	} else {
+		FileCheckArray.Push("TeamSchedule.xml")
+	}
+	
+	If FileCheckArray.Length() > 0 {
+		messageString := "*** WARNING ***`n`nThe following data files are missing from the program folder, which means that the program cannot function properly. Please add the missing data files and restart the program.`n"
+	
+	
+		For index, file in FileCheckArray {
+			messageString .= "`n- " FileCheckArray[index]
+		}
+		
+		MsgBox %messageString%
+		ExitApp
+	}
+	
+	return xmlFile
+}
+
+LoadPlayerStats() {
+	If FileExist("PlayerStats.xml") {
+		xmlFile := new xml()
+		xmlFile.load("PlayerStats.xml")
+	} else {
+		MsgBox, "No PlayerStats.xml file found. This file is necessary and the program cannot function without it. Please add a PlayerStats.xml file and re-start the program."
+		ExitApp
 	}
 	
 	return xmlFile

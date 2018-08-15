@@ -4,12 +4,12 @@
 		<Mods>
 			<Kills>1.3</Kills>
 			<Deaths>1.4</Deaths>
-			<CS>0.6</CS>
+			<CreepScore>0.6</CreepScore>
 			<GPM>0.8</GPM>
 			<TowerKills>0.8</TowerKills>
 			<RoshanKills>0.1</RoshanKills>
-			<TeamFight>1.7</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>1.7</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.7</CampsStacked>
 			<RunesGrabbed>1.9</RunesGrabbed>
 			<FirstBlood>0.3</FirstBlood>
@@ -21,12 +21,12 @@
 		<Mods>
 			<Kills>1.1</Kills>
 			<Deaths>1.8</Deaths>
-			<CS>0.6</CS>
+			<CreepScore>0.6</CreepScore>
 			<GPM>0.8</GPM>
 			<TowerKills>0.3</TowerKills>
 			<RoshanKills>0.1</RoshanKills>
-			<TeamFight>1.8</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>1.8</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.3</CampsStacked>
 			<RunesGrabbed>1.9</RunesGrabbed>
 			<FirstBlood>0</FirstBlood>
@@ -38,12 +38,12 @@
 		<Mods>
 			<Kills>2.3</Kills>
 			<Deaths>2.1</Deaths>
-			<CS>1.1</CS>
+			<CreepScore>1.1</CreepScore>
 			<GPM>1.1</GPM>
 			<TowerKills>1.3</TowerKills>
 			<RoshanKills>0.4</RoshanKills>
-			<TeamFight>2.2</TeamFight>
-			<WardsPlaced>0.1</WardsPlaced>
+			<Teamfight>2.2</Teamfight>
+			<ObsWardsPlanted>0.1</ObsWardsPlanted>
 			<CampsStacked>0.6</CampsStacked>
 			<RunesGrabbed>4.4</RunesGrabbed>
 			<FirstBlood>0.4</FirstBlood>
@@ -55,12 +55,12 @@
 		<Mods>
 			<Kills>1.9</Kills>
 			<Deaths>2.3</Deaths>
-			<CS>1</CS>
+			<CreepScore>1</CreepScore>
 			<GPM>1.3</GPM>
 			<TowerKills>2.7</TowerKills>
 			<RoshanKills>0.5</RoshanKills>
-			<TeamFight>1.8</TeamFight>
-			<WardsPlaced>0.1</WardsPlaced>
+			<Teamfight>1.8</Teamfight>
+			<ObsWardsPlanted>0.1</ObsWardsPlanted>
 			<CampsStacked>0.7</CampsStacked>
 			<RunesGrabbed>1.7</RunesGrabbed>
 			<FirstBlood>0.3</FirstBlood>
@@ -72,12 +72,12 @@
 		<Mods>
 			<Kills>2.6</Kills>
 			<Deaths>1.6</Deaths>
-			<CS>1</CS>
+			<CreepScore>1</CreepScore>
 			<GPM>1.3</GPM>
 			<TowerKills>2.8</TowerKills>
 			<RoshanKills>0.7</RoshanKills>
-			<TeamFight>2.1</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>2.1</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.4</CampsStacked>
 			<RunesGrabbed>3.2</RunesGrabbed>
 			<FirstBlood>0.6</FirstBlood>
@@ -89,12 +89,12 @@
 		<Mods>
 			<Kills>1.1</Kills>
 			<Deaths>1.4</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.6</GPM>
 			<TowerKills>0.4</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>2.1</TeamFight>
-			<WardsPlaced>4.4</WardsPlaced>
+			<Teamfight>2.1</Teamfight>
+			<ObsWardsPlanted>4.4</ObsWardsPlanted>
 			<CampsStacked>1.3</CampsStacked>
 			<RunesGrabbed>3</RunesGrabbed>
 			<FirstBlood>0.3</FirstBlood>
@@ -106,12 +106,12 @@
 		<Mods>
 			<Kills>0.8</Kills>
 			<Deaths>1.4</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.5</GPM>
 			<TowerKills>0.1</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>1.7</TeamFight>
-			<WardsPlaced>6.2</WardsPlaced>
+			<Teamfight>1.7</Teamfight>
+			<ObsWardsPlanted>6.2</ObsWardsPlanted>
 			<CampsStacked>0.7</CampsStacked>
 			<RunesGrabbed>2</RunesGrabbed>
 			<FirstBlood>0.4</FirstBlood>
@@ -123,12 +123,12 @@
 		<Mods>
 			<Kills>0.9</Kills>
 			<Deaths>1.8</Deaths>
-			<CS>0.1</CS>
+			<CreepScore>0.1</CreepScore>
 			<GPM>0.5</GPM>
 			<TowerKills>0.4</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>1.8</TeamFight>
-			<WardsPlaced>5</WardsPlaced>
+			<Teamfight>1.8</Teamfight>
+			<ObsWardsPlanted>5</ObsWardsPlanted>
 			<CampsStacked>0.9</CampsStacked>
 			<RunesGrabbed>1.5</RunesGrabbed>
 			<FirstBlood>0.5</FirstBlood>
@@ -140,12 +140,12 @@
 		<Mods>
 			<Kills>0.8</Kills>
 			<Deaths>1</Deaths>
-			<CS>0.1</CS>
+			<CreepScore>0.1</CreepScore>
 			<GPM>0.4</GPM>
 			<TowerKills>0.3</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>2.1</TeamFight>
-			<WardsPlaced>4.3</WardsPlaced>
+			<Teamfight>2.1</Teamfight>
+			<ObsWardsPlanted>4.3</ObsWardsPlanted>
 			<CampsStacked>0.6</CampsStacked>
 			<RunesGrabbed>1.4</RunesGrabbed>
 			<FirstBlood>0.3</FirstBlood>
@@ -157,12 +157,12 @@
 		<Mods>
 			<Kills>0.9</Kills>
 			<Deaths>1.5</Deaths>
-			<CS>0.5</CS>
+			<CreepScore>0.5</CreepScore>
 			<GPM>0.8</GPM>
 			<TowerKills>0.2</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>1.5</TeamFight>
-			<WardsPlaced>0.5</WardsPlaced>
+			<Teamfight>1.5</Teamfight>
+			<ObsWardsPlanted>0.5</ObsWardsPlanted>
 			<CampsStacked>0.6</CampsStacked>
 			<RunesGrabbed>2.2</RunesGrabbed>
 			<FirstBlood>0.5</FirstBlood>
@@ -174,12 +174,12 @@
 		<Mods>
 			<Kills>1.7</Kills>
 			<Deaths>1.8</Deaths>
-			<CS>0.9</CS>
+			<CreepScore>0.9</CreepScore>
 			<GPM>0.9</GPM>
 			<TowerKills>1.5</TowerKills>
 			<RoshanKills>0.4</RoshanKills>
-			<TeamFight>1.7</TeamFight>
-			<WardsPlaced>0.2</WardsPlaced>
+			<Teamfight>1.7</Teamfight>
+			<ObsWardsPlanted>0.2</ObsWardsPlanted>
 			<CampsStacked>0.4</CampsStacked>
 			<RunesGrabbed>1.6</RunesGrabbed>
 			<FirstBlood>0.5</FirstBlood>
@@ -191,12 +191,12 @@
 		<Mods>
 			<Kills>0.8</Kills>
 			<Deaths>1.3</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.6</GPM>
 			<TowerKills>0.4</TowerKills>
 			<RoshanKills>0.1</RoshanKills>
-			<TeamFight>1.9</TeamFight>
-			<WardsPlaced>2.4</WardsPlaced>
+			<Teamfight>1.9</Teamfight>
+			<ObsWardsPlanted>2.4</ObsWardsPlanted>
 			<CampsStacked>1.2</CampsStacked>
 			<RunesGrabbed>1.7</RunesGrabbed>
 			<FirstBlood>0.6</FirstBlood>
@@ -208,12 +208,12 @@
 		<Mods>
 			<Kills>1.8</Kills>
 			<Deaths>1.6</Deaths>
-			<CS>1.1</CS>
+			<CreepScore>1.1</CreepScore>
 			<GPM>1</GPM>
 			<TowerKills>1.6</TowerKills>
 			<RoshanKills>0.4</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>0.1</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>0.1</ObsWardsPlanted>
 			<CampsStacked>0.6</CampsStacked>
 			<RunesGrabbed>3.3</RunesGrabbed>
 			<FirstBlood>0.2</FirstBlood>
@@ -225,12 +225,12 @@
 		<Mods>
 			<Kills>1</Kills>
 			<Deaths>1.4</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.6</GPM>
 			<TowerKills>0.2</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>4.7</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>4.7</ObsWardsPlanted>
 			<CampsStacked>1</CampsStacked>
 			<RunesGrabbed>1.4</RunesGrabbed>
 			<FirstBlood>0.2</FirstBlood>
@@ -242,12 +242,12 @@
 		<Mods>
 			<Kills>0.7</Kills>
 			<Deaths>1.2</Deaths>
-			<CS>0.3</CS>
+			<CreepScore>0.3</CreepScore>
 			<GPM>0.6</GPM>
 			<TowerKills>0.1</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>1.8</TeamFight>
-			<WardsPlaced>0.6</WardsPlaced>
+			<Teamfight>1.8</Teamfight>
+			<ObsWardsPlanted>0.6</ObsWardsPlanted>
 			<CampsStacked>1.2</CampsStacked>
 			<RunesGrabbed>3.5</RunesGrabbed>
 			<FirstBlood>0.6</FirstBlood>
@@ -259,12 +259,12 @@
 		<Mods>
 			<Kills>0.6</Kills>
 			<Deaths>1.3</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.5</GPM>
 			<TowerKills>0.1</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>1.9</TeamFight>
-			<WardsPlaced>3.5</WardsPlaced>
+			<Teamfight>1.9</Teamfight>
+			<ObsWardsPlanted>3.5</ObsWardsPlanted>
 			<CampsStacked>1.6</CampsStacked>
 			<RunesGrabbed>2.5</RunesGrabbed>
 			<FirstBlood>0.6</FirstBlood>
@@ -276,12 +276,12 @@
 		<Mods>
 			<Kills>0.8</Kills>
 			<Deaths>1</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.6</GPM>
 			<TowerKills>0.1</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>1.9</TeamFight>
-			<WardsPlaced>5.7</WardsPlaced>
+			<Teamfight>1.9</Teamfight>
+			<ObsWardsPlanted>5.7</ObsWardsPlanted>
 			<CampsStacked>0.6</CampsStacked>
 			<RunesGrabbed>3.8</RunesGrabbed>
 			<FirstBlood>0.3</FirstBlood>
@@ -293,12 +293,12 @@
 		<Mods>
 			<Kills>1.1</Kills>
 			<Deaths>1.7</Deaths>
-			<CS>0.6</CS>
+			<CreepScore>0.6</CreepScore>
 			<GPM>0.8</GPM>
 			<TowerKills>0.4</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>1.8</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>1.8</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.7</CampsStacked>
 			<RunesGrabbed>1.6</RunesGrabbed>
 			<FirstBlood>0.1</FirstBlood>
@@ -310,12 +310,12 @@
 		<Mods>
 			<Kills>2.9</Kills>
 			<Deaths>1.1</Deaths>
-			<CS>1.1</CS>
+			<CreepScore>1.1</CreepScore>
 			<GPM>1.1</GPM>
 			<TowerKills>1.6</TowerKills>
 			<RoshanKills>0.2</RoshanKills>
-			<TeamFight>2.1</TeamFight>
-			<WardsPlaced>0.1</WardsPlaced>
+			<Teamfight>2.1</Teamfight>
+			<ObsWardsPlanted>0.1</ObsWardsPlanted>
 			<CampsStacked>0.8</CampsStacked>
 			<RunesGrabbed>3.6</RunesGrabbed>
 			<FirstBlood>0.8</FirstBlood>
@@ -327,12 +327,12 @@
 		<Mods>
 			<Kills>0.7</Kills>
 			<Deaths>1</Deaths>
-			<CS>0.1</CS>
+			<CreepScore>0.1</CreepScore>
 			<GPM>0.5</GPM>
 			<TowerKills>0.3</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>1.7</TeamFight>
-			<WardsPlaced>7</WardsPlaced>
+			<Teamfight>1.7</Teamfight>
+			<ObsWardsPlanted>7</ObsWardsPlanted>
 			<CampsStacked>0.5</CampsStacked>
 			<RunesGrabbed>1.7</RunesGrabbed>
 			<FirstBlood>0.3</FirstBlood>
@@ -344,12 +344,12 @@
 		<Mods>
 			<Kills>2.2</Kills>
 			<Deaths>1.8</Deaths>
-			<CS>0.7</CS>
+			<CreepScore>0.7</CreepScore>
 			<GPM>1</GPM>
 			<TowerKills>2.5</TowerKills>
 			<RoshanKills>0.7</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.6</CampsStacked>
 			<RunesGrabbed>2</RunesGrabbed>
 			<FirstBlood>0.2</FirstBlood>
@@ -361,12 +361,12 @@
 		<Mods>
 			<Kills>2.4</Kills>
 			<Deaths>1.7</Deaths>
-			<CS>0.9</CS>
+			<CreepScore>0.9</CreepScore>
 			<GPM>1</GPM>
 			<TowerKills>2.6</TowerKills>
 			<RoshanKills>0.4</RoshanKills>
-			<TeamFight>2.3</TeamFight>
-			<WardsPlaced>0.1</WardsPlaced>
+			<Teamfight>2.3</Teamfight>
+			<ObsWardsPlanted>0.1</ObsWardsPlanted>
 			<CampsStacked>0.2</CampsStacked>
 			<RunesGrabbed>2.5</RunesGrabbed>
 			<FirstBlood>0.6</FirstBlood>
@@ -378,12 +378,12 @@
 		<Mods>
 			<Kills>1.3</Kills>
 			<Deaths>1.4</Deaths>
-			<CS>0.7</CS>
+			<CreepScore>0.7</CreepScore>
 			<GPM>0.9</GPM>
 			<TowerKills>1.3</TowerKills>
 			<RoshanKills>0.1</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>0.3</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>0.3</ObsWardsPlanted>
 			<CampsStacked>0.5</CampsStacked>
 			<RunesGrabbed>1.7</RunesGrabbed>
 			<FirstBlood>0.3</FirstBlood>
@@ -395,12 +395,12 @@
 		<Mods>
 			<Kills>2.7</Kills>
 			<Deaths>1.7</Deaths>
-			<CS>0.9</CS>
+			<CreepScore>0.9</CreepScore>
 			<GPM>1.2</GPM>
 			<TowerKills>2.5</TowerKills>
 			<RoshanKills>0.6</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.5</CampsStacked>
 			<RunesGrabbed>3.1</RunesGrabbed>
 			<FirstBlood>0.7</FirstBlood>
@@ -412,12 +412,12 @@
 		<Mods>
 			<Kills>2.1</Kills>
 			<Deaths>2.1</Deaths>
-			<CS>0.9</CS>
+			<CreepScore>0.9</CreepScore>
 			<GPM>1</GPM>
 			<TowerKills>2.3</TowerKills>
 			<RoshanKills>0.8</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.3</CampsStacked>
 			<RunesGrabbed>1.8</RunesGrabbed>
 			<FirstBlood>0.4</FirstBlood>
@@ -429,12 +429,12 @@
 		<Mods>
 			<Kills>1.4</Kills>
 			<Deaths>1.5</Deaths>
-			<CS>0.5</CS>
+			<CreepScore>0.5</CreepScore>
 			<GPM>0.7</GPM>
 			<TowerKills>0.2</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>0.1</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>0.1</ObsWardsPlanted>
 			<CampsStacked>0.7</CampsStacked>
 			<RunesGrabbed>2.1</RunesGrabbed>
 			<FirstBlood>0.5</FirstBlood>
@@ -446,12 +446,12 @@
 		<Mods>
 			<Kills>2.8</Kills>
 			<Deaths>2.1</Deaths>
-			<CS>1.1</CS>
+			<CreepScore>1.1</CreepScore>
 			<GPM>1.1</GPM>
 			<TowerKills>2.3</TowerKills>
 			<RoshanKills>0.6</RoshanKills>
-			<TeamFight>2.1</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>2.1</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.4</CampsStacked>
 			<RunesGrabbed>2.5</RunesGrabbed>
 			<FirstBlood>0.7</FirstBlood>
@@ -463,12 +463,12 @@
 		<Mods>
 			<Kills>2.3</Kills>
 			<Deaths>1.8</Deaths>
-			<CS>1.1</CS>
+			<CreepScore>1.1</CreepScore>
 			<GPM>1.1</GPM>
 			<TowerKills>2.2</TowerKills>
 			<RoshanKills>0.4</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.8</CampsStacked>
 			<RunesGrabbed>2</RunesGrabbed>
 			<FirstBlood>0.5</FirstBlood>
@@ -480,12 +480,12 @@
 		<Mods>
 			<Kills>0.5</Kills>
 			<Deaths>1.4</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.4</GPM>
 			<TowerKills>0.5</TowerKills>
 			<RoshanKills>0.1</RoshanKills>
-			<TeamFight>1.7</TeamFight>
-			<WardsPlaced>5.7</WardsPlaced>
+			<Teamfight>1.7</Teamfight>
+			<ObsWardsPlanted>5.7</ObsWardsPlanted>
 			<CampsStacked>1.1</CampsStacked>
 			<RunesGrabbed>1.3</RunesGrabbed>
 			<FirstBlood>0.2</FirstBlood>
@@ -497,12 +497,12 @@
 		<Mods>
 			<Kills>0.8</Kills>
 			<Deaths>1.2</Deaths>
-			<CS>0.3</CS>
+			<CreepScore>0.3</CreepScore>
 			<GPM>0.6</GPM>
 			<TowerKills>0.2</TowerKills>
 			<RoshanKills>0.1</RoshanKills>
-			<TeamFight>1.8</TeamFight>
-			<WardsPlaced>4.7</WardsPlaced>
+			<Teamfight>1.8</Teamfight>
+			<ObsWardsPlanted>4.7</ObsWardsPlanted>
 			<CampsStacked>1</CampsStacked>
 			<RunesGrabbed>2.6</RunesGrabbed>
 			<FirstBlood>0.2</FirstBlood>
@@ -514,12 +514,12 @@
 		<Mods>
 			<Kills>0.7</Kills>
 			<Deaths>1.4</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.5</GPM>
 			<TowerKills>0.3</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>3.2</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>3.2</ObsWardsPlanted>
 			<CampsStacked>1.1</CampsStacked>
 			<RunesGrabbed>1.9</RunesGrabbed>
 			<FirstBlood>0.7</FirstBlood>
@@ -531,12 +531,12 @@
 		<Mods>
 			<Kills>2.2</Kills>
 			<Deaths>2.3</Deaths>
-			<CS>1.1</CS>
+			<CreepScore>1.1</CreepScore>
 			<GPM>1.1</GPM>
 			<TowerKills>2.3</TowerKills>
 			<RoshanKills>0.7</RoshanKills>
-			<TeamFight>2.1</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>2.1</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.4</CampsStacked>
 			<RunesGrabbed>2</RunesGrabbed>
 			<FirstBlood>0.7</FirstBlood>
@@ -548,12 +548,12 @@
 		<Mods>
 			<Kills>2.1</Kills>
 			<Deaths>2.1</Deaths>
-			<CS>1.1</CS>
+			<CreepScore>1.1</CreepScore>
 			<GPM>1.1</GPM>
 			<TowerKills>3.1</TowerKills>
 			<RoshanKills>0.3</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>0.1</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>0.1</ObsWardsPlanted>
 			<CampsStacked>0.7</CampsStacked>
 			<RunesGrabbed>2.5</RunesGrabbed>
 			<FirstBlood>0.4</FirstBlood>
@@ -565,12 +565,12 @@
 		<Mods>
 			<Kills>2.8</Kills>
 			<Deaths>2</Deaths>
-			<CS>1.4</CS>
+			<CreepScore>1.4</CreepScore>
 			<GPM>1.2</GPM>
 			<TowerKills>3.2</TowerKills>
 			<RoshanKills>0.9</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.5</CampsStacked>
 			<RunesGrabbed>2.2</RunesGrabbed>
 			<FirstBlood>0.4</FirstBlood>
@@ -582,12 +582,12 @@
 		<Mods>
 			<Kills>0.8</Kills>
 			<Deaths>0.8</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.5</GPM>
 			<TowerKills>0.3</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>1.9</TeamFight>
-			<WardsPlaced>2.7</WardsPlaced>
+			<Teamfight>1.9</Teamfight>
+			<ObsWardsPlanted>2.7</ObsWardsPlanted>
 			<CampsStacked>0.9</CampsStacked>
 			<RunesGrabbed>3.5</RunesGrabbed>
 			<FirstBlood>0.4</FirstBlood>
@@ -599,12 +599,12 @@
 		<Mods>
 			<Kills>1.2</Kills>
 			<Deaths>1.5</Deaths>
-			<CS>0.5</CS>
+			<CreepScore>0.5</CreepScore>
 			<GPM>0.7</GPM>
 			<TowerKills>0.6</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>1.8</TeamFight>
-			<WardsPlaced>0.1</WardsPlaced>
+			<Teamfight>1.8</Teamfight>
+			<ObsWardsPlanted>0.1</ObsWardsPlanted>
 			<CampsStacked>1.6</CampsStacked>
 			<RunesGrabbed>1.8</RunesGrabbed>
 			<FirstBlood>0.2</FirstBlood>
@@ -616,12 +616,12 @@
 		<Mods>
 			<Kills>1.3</Kills>
 			<Deaths>1.2</Deaths>
-			<CS>0.5</CS>
+			<CreepScore>0.5</CreepScore>
 			<GPM>0.7</GPM>
 			<TowerKills>0.4</TowerKills>
 			<RoshanKills>0.1</RoshanKills>
-			<TeamFight>1.8</TeamFight>
-			<WardsPlaced>0.1</WardsPlaced>
+			<Teamfight>1.8</Teamfight>
+			<ObsWardsPlanted>0.1</ObsWardsPlanted>
 			<CampsStacked>0.9</CampsStacked>
 			<RunesGrabbed>2.5</RunesGrabbed>
 			<FirstBlood>0.4</FirstBlood>
@@ -633,12 +633,12 @@
 		<Mods>
 			<Kills>2.1</Kills>
 			<Deaths>2</Deaths>
-			<CS>1.1</CS>
+			<CreepScore>1.1</CreepScore>
 			<GPM>1.1</GPM>
 			<TowerKills>2.1</TowerKills>
 			<RoshanKills>0.4</RoshanKills>
-			<TeamFight>2.1</TeamFight>
-			<WardsPlaced>0.3</WardsPlaced>
+			<Teamfight>2.1</Teamfight>
+			<ObsWardsPlanted>0.3</ObsWardsPlanted>
 			<CampsStacked>0.5</CampsStacked>
 			<RunesGrabbed>2.6</RunesGrabbed>
 			<FirstBlood>0.3</FirstBlood>
@@ -650,12 +650,12 @@
 		<Mods>
 			<Kills>0.7</Kills>
 			<Deaths>1.2</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.5</GPM>
 			<TowerKills>0.5</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>7.8</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>7.8</ObsWardsPlanted>
 			<CampsStacked>0.8</CampsStacked>
 			<RunesGrabbed>1.4</RunesGrabbed>
 			<FirstBlood>0.7</FirstBlood>
@@ -667,12 +667,12 @@
 		<Mods>
 			<Kills>2.4</Kills>
 			<Deaths>1.8</Deaths>
-			<CS>0.8</CS>
+			<CreepScore>0.8</CreepScore>
 			<GPM>1</GPM>
 			<TowerKills>1</TowerKills>
 			<RoshanKills>0.3</RoshanKills>
-			<TeamFight>2.1</TeamFight>
-			<WardsPlaced>0.1</WardsPlaced>
+			<Teamfight>2.1</Teamfight>
+			<ObsWardsPlanted>0.1</ObsWardsPlanted>
 			<CampsStacked>0.2</CampsStacked>
 			<RunesGrabbed>3.2</RunesGrabbed>
 			<FirstBlood>0.6</FirstBlood>
@@ -684,12 +684,12 @@
 		<Mods>
 			<Kills>1</Kills>
 			<Deaths>1.4</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.6</GPM>
 			<TowerKills>0.1</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>1.9</TeamFight>
-			<WardsPlaced>5.6</WardsPlaced>
+			<Teamfight>1.9</Teamfight>
+			<ObsWardsPlanted>5.6</ObsWardsPlanted>
 			<CampsStacked>1.2</CampsStacked>
 			<RunesGrabbed>3.5</RunesGrabbed>
 			<FirstBlood>0.6</FirstBlood>
@@ -701,12 +701,12 @@
 		<Mods>
 			<Kills>1.7</Kills>
 			<Deaths>1.9</Deaths>
-			<CS>0.6</CS>
+			<CreepScore>0.6</CreepScore>
 			<GPM>0.8</GPM>
 			<TowerKills>1.1</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>2</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>2</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.1</CampsStacked>
 			<RunesGrabbed>1.4</RunesGrabbed>
 			<FirstBlood>0.8</FirstBlood>
@@ -718,12 +718,12 @@
 		<Mods>
 			<Kills>1.6</Kills>
 			<Deaths>2.1</Deaths>
-			<CS>0.6</CS>
+			<CreepScore>0.6</CreepScore>
 			<GPM>0.8</GPM>
 			<TowerKills>0.5</TowerKills>
 			<RoshanKills>0.2</RoshanKills>
-			<TeamFight>1.8</TeamFight>
-			<WardsPlaced>0</WardsPlaced>
+			<Teamfight>1.8</Teamfight>
+			<ObsWardsPlanted>0</ObsWardsPlanted>
 			<CampsStacked>0.8</CampsStacked>
 			<RunesGrabbed>1.7</RunesGrabbed>
 			<FirstBlood>0.3</FirstBlood>
@@ -735,12 +735,12 @@
 		<Mods>
 			<Kills>0.8</Kills>
 			<Deaths>1.7</Deaths>
-			<CS>0.2</CS>
+			<CreepScore>0.2</CreepScore>
 			<GPM>0.6</GPM>
 			<TowerKills>0.3</TowerKills>
 			<RoshanKills>0</RoshanKills>
-			<TeamFight>2.1</TeamFight>
-			<WardsPlaced>3.5</WardsPlaced>
+			<Teamfight>2.1</Teamfight>
+			<ObsWardsPlanted>3.5</ObsWardsPlanted>
 			<CampsStacked>0.5</CampsStacked>
 			<RunesGrabbed>3</RunesGrabbed>
 			<FirstBlood>0</FirstBlood>
@@ -752,12 +752,12 @@
 		<Mods>
 			<Kills>0.8</Kills>
 			<Deaths>1.6</Deaths>
-			<CS>0.3</CS>
+			<CreepScore>0.3</CreepScore>
 			<GPM>0.6</GPM>
 			<TowerKills>0.4</TowerKills>
 			<RoshanKills>0.1</RoshanKills>
-			<TeamFight>1.9</TeamFight>
-			<WardsPlaced>1.6</WardsPlaced>
+			<Teamfight>1.9</Teamfight>
+			<ObsWardsPlanted>1.6</ObsWardsPlanted>
 			<CampsStacked>0.4</CampsStacked>
 			<RunesGrabbed>2.2</RunesGrabbed>
 			<FirstBlood>0.4</FirstBlood>
@@ -769,12 +769,12 @@
 		<Mods>
 			<Kills>2.08333333333333</Kills>
 			<Deaths>1.78055555555556</Deaths>
-			<CS>0.944444444444444</CS>
+			<CreepScore>0.944444444444444</CreepScore>
 			<GPM>1.03055555555556</GPM>
 			<TowerKills>1.99722222222222</TowerKills>
 			<RoshanKills>0.436111111111111</RoshanKills>
-			<TeamFight>1.96944444444444</TeamFight>
-			<WardsPlaced>0.0472222222222222</WardsPlaced>
+			<Teamfight>1.96944444444444</Teamfight>
+			<ObsWardsPlanted>0.0472222222222222</ObsWardsPlanted>
 			<CampsStacked>0.494444444444444</CampsStacked>
 			<RunesGrabbed>2.30277777777778</RunesGrabbed>
 			<FirstBlood>0.444444444444444</FirstBlood>
@@ -786,12 +786,12 @@
 		<Mods>
 			<Kills>0.786111111111111</Kills>
 			<Deaths>1.28055555555556</Deaths>
-			<CS>0.191666666666667</CS>
+			<CreepScore>0.191666666666667</CreepScore>
 			<GPM>0.525</GPM>
 			<TowerKills>0.258333333333333</TowerKills>
 			<RoshanKills>0.0333333333333333</RoshanKills>
-			<TeamFight>1.91388888888889</TeamFight>
-			<WardsPlaced>4.08611111111111</WardsPlaced>
+			<Teamfight>1.91388888888889</Teamfight>
+			<ObsWardsPlanted>4.08611111111111</ObsWardsPlanted>
 			<CampsStacked>0.958333333333333</CampsStacked>
 			<RunesGrabbed>2.25833333333333</RunesGrabbed>
 			<FirstBlood>0.419444444444444</FirstBlood>
@@ -803,12 +803,12 @@
 		<Mods>
 			<Kills>1.24444444444444</Kills>
 			<Deaths>1.50555555555556</Deaths>
-			<CS>0.583333333333333</CS>
+			<CreepScore>0.583333333333333</CreepScore>
 			<GPM>0.777777777777778</GPM>
 			<TowerKills>0.583333333333334</TowerKills>
 			<RoshanKills>0.0666666666666667</RoshanKills>
-			<TeamFight>1.83888888888889</TeamFight>
-			<WardsPlaced>0.116666666666667</WardsPlaced>
+			<Teamfight>1.83888888888889</Teamfight>
+			<ObsWardsPlanted>0.116666666666667</ObsWardsPlanted>
 			<CampsStacked>0.672222222222222</CampsStacked>
 			<RunesGrabbed>2.06666666666667</RunesGrabbed>
 			<FirstBlood>0.25</FirstBlood>

@@ -7,14 +7,11 @@ SetWorkingDir %A_ScriptDir%
 #Include xml.ahk
 
 ; TODO
-; 1) Integrate TI8 fantasy algorithm
-; 2) Integrate TI7 player data
-; 3) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
-; 4) Add error checking - validate number of mods found matches card type
-; 5) Add cleaner handling of green cards for persistent storage (don't store blank score or mods)
-; 6) Resolve issue where persistent storage stores 0.00 score as blank
-; 7) Add edge-case handling for situations like where players are on the last card and try and save a stack, but it only saves that last card
-; 8) Add processing of entire team list - maybe require manual changing between players?
+; 1) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
+; 2) Add error checking - validate number of mods found matches card type
+; 3) Add cleaner handling of green cards for persistent storage (don't store blank score or mods)
+; 4) Add edge-case handling for situations like where players are on the last card and try and save a stack, but it only saves that last card
+; 5) Add processing of entire team list - maybe require manual changing between players?
 
 $^1::
 	IfWinExist Dota 2
@@ -43,7 +40,7 @@ $^1::
 			card.cardType := GetCardType(cardTypeList, cardLocation)
 			card.playerRole := GetRole(cardLocation, card.cardType)
 			If card.cardType != "Green"
-				card.cardScore := GetMods(modList, percent, cardLocation, card.cardType, card.playerRole)
+				card.cardScore := GetMods(modList, percent, cardLocation, card.cardType, card.PlayerName, card.playerRole, card.playerTeam, playerStats, playerAvgFp)
 			card.modList := modList
 			card.percent := percent
 			cardList.Push(card)
@@ -198,7 +195,7 @@ GetPlayer(cardLocation, playerTeam) {
 	Winstrike := ["ALWAYSWANNAFLY", "Iceberg", "Nofear", "nongrata", "Silent"]
 	
 	For index, currentPlayer in %playerTeam% {
-		If ImageSearch(topLeftX, topLeftY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, A_ScriptDir "\Images\Dota2-CardAnalyzer\Players\" playerTeam "\" currentPlayer ".png")
+		If ImageSearch(topLeftX, topLeftY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, "*5 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Players\" playerTeam "\" currentPlayer ".png")
 			return %currentPlayer%
 	}
 }
@@ -219,7 +216,7 @@ GetRole(cardLocation, cardType) {
 	}
 }
 
-GetMods(ByRef modList, ByRef percent, cardLocation, cardType, playerRole) {
+GetMods(ByRef modList, ByRef percent, cardLocation, cardType, playerName, playerRole, playerTeam, playerStats, playerAvgFp) {
 	modTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "GPM", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
 	coreScoreList := [0, 1.2, 2.3, 0.9, 1.3, 2.9, 0, 0.9, 4.4, 3.5, 2.3, 3.4]
 	offlaneScoreList := [0, 0, 0, 0.9, 0, 0, 0, 0, 4.4, 3.5, 2.3, 0]
@@ -243,6 +240,8 @@ GetMods(ByRef modList, ByRef percent, cardLocation, cardType, playerRole) {
 		}
 	}
 	
+	cardScore := GetCardScore(modList, percent, modTypeList, playerName, playerRole, playerTeam, playerStats, playerAvgFp)
+	
 	return cardScore
 }
 
@@ -255,6 +254,41 @@ GetPercent(topX, topY, cardType) {
 		If ImageSearch(foundX, foundY, topX + 300, topY, topX + 400, topY + 25, "*40 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Percents\" currentPercent cardType ".png")
 			return %currentPercent%
 	}
+}
+
+GetCardScore(modList, percent, modTypeList, playerName, playerRole, playerTeam, playerStats, playerAvgFp) {
+	cardScore := 0
+
+	If PlayerExists(playerStats, playerName, playerRole, 0, playerIndex, "PlayerStats") {
+		For index, currentModType in modTypeList {
+			For index2, currentModList in modList {
+				If (currentModList = currentModType) {
+					cardScore := cardScore + (playerStats.getText("//Player[" playerIndex "]/Mods/" currentModType) * (1 + (percent[index2] / 100)))
+					continue 2
+				}
+			}
+			cardScore := cardScore + playerStats.getText("//Player[" playerIndex "]/Mods/" currentModType)
+		}
+	} Else {
+		TeamExists(playerAvgFp, playerTeam, teamIndex, "PlayerAvgFP")
+		TeamExists(playerAvgFp, "Roles", roleTeamIndex, "PlayerAvgFP")
+		PlayerExists(playerAvgFp, playerName, playerRole, teamIndex, playerIndex2, "PlayerAvgFP")
+		PlayerExists(playerAvgFp, playerRole, playerRole, roleTeamIndex, rolePlayerIndex, "PlayerAvgFP")
+		
+		For index, currentModType in modTypeList {
+			For index2, currentModList in modList {
+				If (currentModList = currentModType) {
+					cardScore := cardScore + (playerStats.getText("//Player[" playerIndex "]/Mods/" currentModType) * (1 + (percent[index2] / 100)))
+					continue 2
+				}
+			}
+			cardScore := cardScore + playerStats.getText("//Player[" playerIndex "]/Mods/" currentModType)
+		}
+		
+		cardScore := cardScore * (playerAvgFp.getText("//Team[" teamIndex "]/Players/Player[" playerIndex2 "]/AvgFP") / playerAvgFp.getText("//Team[" roleTeamIndex "]/Players/Player[" rolePlayerIndex "]/AvgFP"))
+	}
+	
+	return cardScore
 }
 
 GenerateDebug(cardList) {
@@ -288,18 +322,18 @@ SaveCards(xmlData, cardList) {
 	teamIndex := 1
 	playerIndex := 1
 
-	If !TeamExists(xmlData, cardList, teamIndex) {
+	If !TeamExists(xmlData, cardList[1].playerTeam, teamIndex, "CardData") {
 		xmlData.addElement("Team", "Data")
 		xmlData.addElement("Name", "//Team[" teamIndex "]", cardList[1].playerTeam)
 		xmlData.addElement("Players", "//Team[" teamIndex "]")
 	}
 	
-	If !PlayerExists(xmlData, cardList, teamIndex, playerIndex) {
+	If !PlayerExists(xmlData, cardList[1].playerName, cardList[1].playerRole, teamIndex, playerIndex, "CardData") {
 		xmlData.addElement("Player", "//Team[" teamIndex "]/Players")
 		xmlData.addElement("Name", "//Team[" teamIndex "]/Players/Player[" playerIndex "]", cardList[1].playerName)
 		xmlData.addElement("Position", "//Team[" teamIndex "]/Players/Player[" playerIndex "]", cardList[1].playerRole)
 		xmlData.addElement("Cards", "//Team[" teamIndex "]/Players/Player[" playerIndex "]")
-	} else {
+	} Else {
 		deleteNode := xmlData.selectSingleNode("//Team[" teamIndex "]/Players/Player[" playerIndex "]/Cards")
 		deleteNode.ParentNode.RemoveChild(deleteNode)
 		xmlData.addElement("Cards", "//Team[" teamIndex "]/Players/Player[" playerIndex "]")
@@ -321,30 +355,64 @@ SaveCards(xmlData, cardList) {
 	return xmlData
 }
 
-TeamExists(xmlData, cardList, ByRef teamIndex) {
-	For index, node in xmlData.getChildren("Data", "element") {
-		If xmlData.getText("//Team[" index "]/Name") = cardList[1].playerTeam {
-			teamIndex := index
-			return true
+TeamExists(xmlData, playerTeam, ByRef teamIndex, fileType) {
+	If (fileType = "CardData") {
+		For index, node in xmlData.getChildren("Data", "element") {
+			If xmlData.getText("//Team[" index "]/Name") = playerTeam {
+				teamIndex := index
+				return true
+			}
+			
+			teamIndex := ++index
 		}
-		
-		teamIndex := ++index
-	}
 
-	return false
+		return false
+	} Else If (fileType = "PlayerAvgFP") {
+		For index, node in xmlData.getChildren("Teams", "element") {
+			If xmlData.getText("//Team[" index "]/Name") = playerTeam {
+				teamIndex := index
+				return true
+			}
+		}
+
+		return false
+	}
 }
 
-PlayerExists(xmlData, cardList, teamIndex, ByRef playerIndex) {
-	For index, node in xmlData.getChildren("//Team[" teamIndex "]/Players", "element") {
-		If xmlData.getText("//Team[" teamIndex "]/Players/Player[" index "]/Name") = cardList[1].playerName {
-			playerIndex := index
-			return true
+PlayerExists(xmlData, playerName, playerRole, teamIndex, ByRef playerIndex, fileType) {
+	If (fileType = "CardData") {
+		For index, node in xmlData.getChildren("//Team[" teamIndex "]/Players", "element") {
+			If xmlData.getText("//Team[" teamIndex "]/Players/Player[" index "]/Name") = playerName {
+				playerIndex := index
+				return true
+			}
+			
+			playerIndex := ++index
 		}
 		
-		playerIndex := ++index
+		return false
+	} Else If (fileType = "PlayerStats") {
+		For index, node in xmlData.getChildren("Players", "element") {
+			If xmlData.getText("//Player[" index "]/Name") = playerName {
+				playerIndex := index
+				return true
+			} Else If xmlData.getText("//Player[" index "]/Name") = playerRole {
+				playerIndex := index
+				return false
+			}
+		}
+		
+		return true
+	} Else If (fileType ="PlayerAvgFP") {
+		For index, node in xmlData.getChildren("//Team[" teamIndex "]/Players", "element") {
+			If xmlData.getText("//Team[" teamIndex "]/Players/Player[" index "]/Name") = playerName {
+				playerIndex := index
+				return true
+			}
+		}
+		
+		return false
 	}
-	
-	return false
 }
 
 TrimNumberStr(num) {

@@ -450,18 +450,18 @@
 		</Players>
 	</Team>
 	<Team>
-		<Name>ROLES</Name>
+		<Name>Roles</Name>
 		<Players>
 			<Player>
-				<Name>CORE</Name>
+				<Name>Core</Name>
 				<AvgFP>14.60278</AvgFP>
 			</Player>
 			<Player>
-				<Name>OFFLANE</Name>
+				<Name>Offlane</Name>
 				<AvgFP>13.68889</AvgFP>
 			</Player>
 			<Player>
-				<Name>SUPPORT</Name>
+				<Name>Support</Name>
 				<AvgFP>10.95556</AvgFP>
 			</Player>
 		</Players>

@@ -7,11 +7,12 @@ SetWorkingDir %A_ScriptDir%
 #Include xml.ahk
 
 ; TODO
-; 1) Provide Fantasy pick recommendations, with ability to remove teams that aren't in TI anymore
-; 2) Add error checking - validate number of mods found matches card type
-; 3) Add cleaner handling of green cards for persistent storage (don't store blank score or mods)
-; 4) Add edge-case handling for situations like where players are on the last card and try and save a stack, but it only saves that last card
-; 5) Add processing of entire team list - maybe require manual changing between players?
+; 1) Fix issue with unlimited number of recommendations occurring
+; 2) Remove duplicate player listings from recommendations
+; 3) Add error checking - validate number of mods found matches card type
+; 4) Add cleaner handling of green cards for persistent storage (don't store blank score or mods)
+; 5) Add edge-case handling for situations like where players are on the last card and try and save a stack, but it only saves that last card
+; 6) Add processing of entire team list - maybe require manual changing between players?
 
 $^1::
 	IfWinExist Dota 2
@@ -39,8 +40,7 @@ $^1::
 			card.playerName := playerName
 			card.cardType := GetCardType(cardTypeList, cardLocation)
 			card.playerRole := GetRole(cardLocation, card.cardType)
-			If card.cardType != "Green"
-				card.cardScore := GetMods(modList, percent, cardLocation, card.cardType, card.PlayerName, card.playerRole, card.playerTeam, playerStats, playerAvgFp)
+			card.cardScore := GetMods(modList, percent, cardLocation, card.cardType, card.PlayerName, card.playerRole, card.playerTeam, playerStats, playerAvgFp)
 			card.modList := modList
 			card.percent := percent
 			cardList.Push(card)
@@ -71,6 +71,57 @@ $^1::
 Return
 
 $^2::
+	IfWinExist Dota 2
+	{
+		WinActivate
+		
+		cardData := LoadData(PlayerStats, PlayerAvgFP, TeamSchedule)
+		playerStats := PlayerStats
+		playerAvgFp := PlayerAvgFP
+		teamSchedule := TeamSchedule
+		
+		typeList := ["Core", "Offlane", "Support"]
+		
+		rankingCore := {}
+		rankingOfflane := {}
+		rankingSupport := {}
+		
+		InputBox, scheduleDate, "Enter Schedule Date", "Enter the date to analyze in MM/DD/YYYY format:"
+		
+		InputBox, roleChoice, "Enter Role Choice", "Enter the role you would like to analyze: Core`, Offlane`, or Support:"
+		
+		InputBox, rankingCount, "Enter Ranking Count", "Enter the number of top players to return for each role:"
+		
+		For teamIndex, teamNode in cardData.getChildren("Data", "element") {
+			teamName := cardData.getText("//Team[" teamIndex "]/Name")
+			For playerIndex, playerNode in cardData.getChildren("//Team[" teamIndex "]/Players", "element") {
+				playerName := cardData.getText("//Team[" teamIndex "]/Players/Player[" playerIndex "]/Name")
+				playerRole := cardData.getText("//Team[" teamIndex "]/Players/Player[" playerIndex "]/Position")
+				
+				For cardIndex, cardNode in cardData.getChildren("//Team[" teamIndex "]/Players/Player[" playerIndex "]/Cards", "element") {
+					scoreBase := cardData.getText("//Team[" teamIndex "]/Players/Player[" playerIndex "]/Cards/Card[" cardIndex "]/Score")
+					
+					gamesPlayed := GetGamesPlayed(teamName, scheduleDate, teamSchedule)
+					
+					scoreAggregate := scoreBase * gamesPlayed
+					
+					ranking%playerRole% := UpdateRanking(ranking%playerRole%, playerName, teamName, scoreBase, scoreAggregate, rankingCount)
+				}
+			}
+		}
+		
+		messageString := "====== Top " rankingCount " " roleChoice " Players ======`n`n"
+
+		For objectIndex, rankingEntry in ranking%roleChoice% {
+			messageString .= "= " objectIndex " =`n"
+			messageString .= "Player Name: " rankingEntry.playerName "`n"
+			messageString .= "Team Name: " rankingEntry.teamName "`n"
+			messageString .= "Base Score: " rankingEntry.scoreBase "`n"
+			messageString .= "Aggregate Score: " rankingEntry.scoreAggregate "`n`n"
+		}
+		
+		MsgBox %messageString%
+	}
 Return
 
 $^3::
@@ -169,7 +220,7 @@ GetTeam(cardLocation) {
 	teamList := ["EvilGeniuses", "Fnatic", "InvictusGaming", "Mineski", "Newbee", "OG", "OpTicGaming", "paiNGaming", "PSGLGD", "TeamLiquid", "TeamSecret", "TeamSerenity", "TNCPredator", "VGJStorm", "VGJThunder", "ViciGaming", "VirtusPro", "Winstrike"]
 	
 	For index, currentTeam in teamList {
-		If ImageSearch(topLeftX, topLeftY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, A_ScriptDir "\Images\Dota2-CardAnalyzer\Teams\" currentTeam ".png")
+		If ImageSearch(topLeftX, topLeftY, cardLocation.topLeftX, cardLocation.topLeftY, cardLocation.bottomRightX, cardLocation.bottomRightY, "*5 " A_ScriptDir "\Images\Dota2-CardAnalyzer\Teams\" currentTeam ".png")
 			return %currentTeam%
 	}
 }
@@ -218,9 +269,6 @@ GetRole(cardLocation, cardType) {
 
 GetMods(ByRef modList, ByRef percent, cardLocation, cardType, playerName, playerRole, playerTeam, playerStats, playerAvgFp) {
 	modTypeList := ["CampsStacked", "CreepScore", "Deaths", "FirstBlood", "GPM", "Kills", "ObsWardsPlanted", "RoshanKills", "RunesGrabbed", "Stuns", "Teamfight", "TowerKills"]
-	coreScoreList := [0, 1.2, 2.3, 0.9, 1.3, 2.9, 0, 0.9, 4.4, 3.5, 2.3, 3.4]
-	offlaneScoreList := [0, 0, 0, 0.9, 0, 0, 0, 0, 4.4, 3.5, 2.3, 0]
-	supportScoreList := [1.8, 0, 0, 0.9, 0, 0, 7, 0, 4.4, 3.5, 2.3, 0]
 	cardScore := 0
 	matches := 0
 	
@@ -308,11 +356,9 @@ GenerateDebug(cardList) {
 		For index2, element in card.modList {
 			messageString .= card.modList[index2] ": " card.percent[index2] "%`n"
 		}
-		
-		If card.modList.Length() > 0 {
-			messageString .= "`n"
-			messageString .= "Card Score: " TrimNumberStr(card.cardScore) "`n"
-		}
+
+		messageString .= "`n"
+		messageString .= "`nCard Score: " TrimNumberStr(card.cardScore) "`n"
 	}
 	
 	return messageString
@@ -413,6 +459,36 @@ PlayerExists(xmlData, playerName, playerRole, teamIndex, ByRef playerIndex, file
 		
 		return false
 	}
+}
+
+GetGamesPlayed(teamName, scheduleDate, teamSchedule) {
+	For teamIndex, teamNode in teamSchedule.getChildren("Teams", "element") {
+		If (teamSchedule.getText("//Team[" teamIndex "]/Name") = teamName) {
+			For dayIndex, dayNode in teamSchedule.getChildren("//Team[" teamIndex "]/Days", "element") {
+				If (teamSchedule.getText("//Team[" teamIndex "]/Days/Day[" dayIndex "]/Date") = scheduleDate)
+					return teamSchedule.getText("//Team[" teamIndex "]/Days/Day[" dayIndex "]/NumGames")
+			}
+		}
+	}
+}
+
+UpdateRanking(rankingObject, playerName, teamName, scoreBase, scoreAggregate, rankingCount) {
+	player := {}
+	player.playerName := playerName
+	player.teamName := teamName
+	player.scoreBase := scoreBase
+	player.scoreAggregate := scoreAggregate
+	
+	For index, playerRecord in rankingObject {
+		If (player.scoreAggregate > playerRecord.scoreAggregate) {
+			rankingObject.InsertAt(index, player)
+			return rankingObject
+		}
+	}
+	
+	rankingObject.Push(player)
+	
+	return rankingObject
 }
 
 TrimNumberStr(num) {
